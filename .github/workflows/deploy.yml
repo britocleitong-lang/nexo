@@ -1,0 +1,59 @@
+# Publica o Nexo no GitHub Pages a cada envio para a branch principal.
+#
+# O que este arquivo poupa: sem ele, publicar significa rodar o build na
+# mão, copiar a pasta dist e commitar o resultado toda vez. Com ele, você
+# só envia o código e o site se atualiza sozinho em uns dois minutos.
+#
+# A variável BASE precisa bater com o nome do repositório. Se o seu
+# repositório se chamar "meu-nexo", troque abaixo para /meu-nexo/.
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Se você enviar dois commits seguidos, cancela a publicação anterior em
+# vez de enfileirar — o que vale é sempre a última versão.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Gerar o site
+        env:
+          BASE: /nexo/
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

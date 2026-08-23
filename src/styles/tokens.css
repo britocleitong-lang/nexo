@@ -1,0 +1,194 @@
+@import "@fontsource-variable/inter";
+
+/* =====================================================================
+   NEXO — sistema visual
+   ---------------------------------------------------------------------
+   Direção: um ateliê claro, com camadas.
+
+   O app tem 15 áreas diferentes. O problema real de orientação não é
+   "isso é urgente?", é "onde eu estou?". Então a cor aqui trabalha como
+   ENDEREÇO: cada área tem um matiz próprio, discreto, que aparece no
+   ícone, no cabeçalho e no item ativo do menu. Você reconhece a seção
+   pela cor antes de ler o título.
+
+   Como a cor virou endereço, o alerta precisa de outro recurso: ele
+   aparece como pastilha sólida com ponto — forma, não matiz.
+
+   Superfícies claras e empilhadas, cantos generosos, sombra suave. O app
+   é usado em sessões curtas e frequentes; a leitura precisa ser
+   confortável, não austera.
+   ===================================================================== */
+
+:root {
+  /* --- Neutros: cinza levemente quente, pra não parecer clínico ------ */
+  --n-0:   #ffffff;
+  --n-25:  #fcfcfb;
+  --n-50:  #f6f6f4;
+  --n-100: #eeeeec;
+  --n-200: #e2e2df;
+  --n-300: #cdcdc8;
+  --n-400: #a3a39d;
+  --n-500: #79797380;
+  --n-600: #6b6b64;
+  --n-700: #4e4e48;
+  --n-800: #33332e;
+  --n-900: #1f1f1c;
+
+  /* --- Matiz principal: verde-pinho fechado -------------------------- */
+  --brand-900: #0b3d38;
+  --brand-700: #10554e;
+  --brand-600: #146a61;
+  --brand-300: #8fc4bd;
+  --brand-100: #dcece9;
+  --brand-50:  #eef6f5;
+
+  /* --- Endereços de módulo (matizes dessaturados) --------------------- */
+  --hue-financeiro: #10554e;
+  --hue-analise:    #3d5a99;
+  --hue-bens:       #8a6534;
+  --hue-pessoal:    #7a4a6d;
+  /* Bem-estar: verde-oliva. Fica distante do verde-pinho da marca (que é
+     "o app") e do vinho de Pessoal, mantendo cor como endereço. */
+  --hue-bemestar:   #5c7047;
+  --hue-sistema:    #4e4e48;
+
+  /* --- Estados -------------------------------------------------------- */
+  --alerta:      #a33a2b;
+  --alerta-bg:   #fbeeec;
+  --atencao:     #8a6534;
+  --atencao-bg:  #f9f1e6;
+  --confirma:    #2f6b47;
+  --confirma-bg: #e9f3ec;
+
+  /* Aliases para o código já existente */
+  --accent: var(--brand-700);
+  --accent-hover: var(--brand-900);
+  --accent-soft: var(--brand-100);
+  --warn: var(--atencao);
+  --warn-bg: var(--atencao-bg);
+  --danger: var(--alerta);
+  --danger-bg: var(--alerta-bg);
+  --success: var(--confirma);
+  --success-bg: var(--confirma-bg);
+  --signal-overdue: var(--alerta);
+  --signal-overdue-bg: var(--alerta-bg);
+  --signal-soon: var(--atencao);
+  --signal-soon-bg: var(--atencao-bg);
+  --signal-good: var(--confirma);
+  --signal-good-bg: var(--confirma-bg);
+  --navy-900: var(--brand-900);
+  --gray-100: var(--n-100);
+  --gray-200: var(--n-200);
+  --gray-300: var(--n-300);
+  --ink-900: var(--n-900);
+  --ink-700: var(--n-700);
+  --ink-500: var(--n-500);
+  --ink-400: var(--n-400);
+  --ink-300: var(--n-300);
+  --ink-100: var(--n-100);
+  --white: var(--n-0);
+
+  /* --- Séries de gráfico ---------------------------------------------- */
+  --chart-1: #10554e;
+  --chart-2: #3d5a99;
+  --chart-3: #8a6534;
+  --chart-4: #a3a39d;
+
+  /* --- Papéis semânticos ----------------------------------------------- */
+  --bg-app: var(--n-50);
+  --bg-card: var(--n-0);
+  --bg-sunken: var(--n-100);
+  --border-subtle: var(--n-200);
+  --border-strong: var(--n-300);
+  --surface-hover: var(--n-100);
+  --surface-muted: var(--n-100);
+  --scrollbar-thumb: var(--n-300);
+
+  --text-primary: var(--n-900);
+  --text-secondary: var(--n-700);
+  --text-muted: var(--n-600);
+  --text-on-brand: #eef6f5;
+  --text-on-navy: var(--text-primary);
+  --text-on-navy-muted: var(--text-muted);
+
+  /* --- Tipografia ------------------------------------------------------- */
+  /* Inter em toda a interface. Testei Plus Jakarta pela forma mais
+     acolhedora, mas o build daquela fonte vinha com métricas de espaço
+     defeituosas e as palavras grudavam. A personalidade aqui vem da cor
+     e das camadas, não do tipo. */
+  --font-ui: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-data: "Inter Variable", -apple-system, "Segoe UI", sans-serif;
+
+  --size-micro: 11.5px;
+  --size-small: 13px;
+  --size-body: 14.5px;
+  --size-lead: 16px;
+  --size-title: 24px;
+  --size-figure: 30px;
+  --size-hero: 44px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Cantos generosos — a forma faz o trabalho que a austeridade fazia */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgba(31, 31, 28, 0.04), 0 4px 12px -6px rgba(31, 31, 28, 0.08);
+  --shadow-raised: 0 2px 4px rgba(31, 31, 28, 0.05), 0 12px 28px -10px rgba(31, 31, 28, 0.14);
+  --shadow-pop: 0 24px 60px -16px rgba(31, 31, 28, 0.3);
+  --shadow-focus: 0 0 0 3px var(--brand-100);
+
+  --sidebar-width: 244px;
+  --content-max: 1200px;
+}
+
+/* --- Modo escuro -------------------------------------------------------- */
+:root[data-theme="dark"] {
+  --bg-app: #16161a;
+  --bg-card: #1e1e23;
+  --bg-sunken: #26262c;
+  --border-subtle: #2e2e35;
+  --border-strong: #3d3d45;
+  --text-primary: #ecece9;
+  --text-secondary: #b4b4ae;
+  --text-muted: #8e8e88;
+  --surface-hover: #26262c;
+  --surface-muted: #26262c;
+  --scrollbar-thumb: #3d3d45;
+
+  --brand-700: #4fa89c;
+  --brand-600: #5fb8ab;
+  --brand-100: #1d3b38;
+  --brand-50: #172b29;
+  --accent: var(--brand-700);
+  --accent-hover: var(--brand-600);
+  --accent-soft: var(--brand-100);
+
+  --hue-financeiro: #4fa89c;
+  --hue-analise:    #8098d8;
+  --hue-bens:       #c9a06a;
+  --hue-pessoal:    #bb8fae;
+  --hue-bemestar:   #9ab87d;
+  --hue-sistema:    #a3a39d;
+
+  --alerta: #e08072;    --alerta-bg: #35201d;
+  --atencao: #d1a468;   --atencao-bg: #322718;
+  --confirma: #6fbc8b;  --confirma-bg: #1b2f22;
+
+  --chart-1: #4fa89c;
+  --chart-2: #8098d8;
+  --chart-3: #c9a06a;
+  --chart-4: #6b6b64;
+
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-raised: 0 12px 28px -10px rgba(0,0,0,0.55);
+  --shadow-focus: 0 0 0 3px rgba(79, 168, 156, 0.28);
+}

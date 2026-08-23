@@ -1,0 +1,99 @@
+/* Vacinas — a situação de cada dose se distingue por barra lateral (forma),
+   não por fundo colorido, seguindo a regra do app: cor = endereço. */
+
+.vac-lista { display: flex; flex-direction: column; }
+
+.vac-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 11px var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  border-left: 3px solid transparent;
+  transition: background 120ms ease;
+}
+
+.vac-item:last-child { border-bottom: none; }
+.vac-item:hover { background: var(--surface-hover); }
+
+.vac-item.sit-atrasada { border-left-color: var(--alerta); }
+.vac-item.sit-pendente { border-left-color: var(--atencao); }
+.vac-item.sit-aplicada { border-left-color: var(--confirma); }
+.vac-item.sit-futura { border-left-color: var(--border-strong); opacity: .72; }
+
+.vac-icone {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: var(--radius-sm);
+  background: var(--bg-sunken); color: var(--text-muted);
+  flex-shrink: 0; margin-top: 1px;
+}
+
+.sit-atrasada .vac-icone { background: var(--alerta-bg); color: var(--alerta); }
+.sit-pendente .vac-icone { background: var(--atencao-bg); color: var(--atencao); }
+.sit-aplicada .vac-icone { background: var(--confirma-bg); color: var(--confirma); }
+
+.vac-corpo { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+
+.vac-nome {
+  display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
+  font-size: var(--size-body); font-weight: 650; color: var(--text-primary);
+}
+
+.vac-nome em {
+  font-style: normal;
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  background: var(--bg-sunken);
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+}
+
+.vac-meta { font-size: var(--size-micro); color: var(--text-muted); }
+
+.vac-obs {
+  font-size: var(--size-micro);
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 2px;
+  max-width: 70ch;
+  line-height: 1.5;
+}
+
+.vac-acoes { display: flex; gap: 2px; flex-shrink: 0; }
+
+.vac-tab-ponto {
+  display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--alerta); margin-left: 6px;
+  vertical-align: middle;
+}
+
+.vac-aviso-nascimento,
+.vac-disclaimer {
+  display: flex; gap: var(--space-3); align-items: flex-start;
+  border-left: 3px solid var(--atencao);
+  margin-bottom: var(--space-5);
+}
+
+.vac-aviso-nascimento svg,
+.vac-disclaimer svg { color: var(--atencao); flex-shrink: 0; margin-top: 2px; }
+
+.vac-aviso-nascimento span,
+.vac-disclaimer p {
+  margin: 0;
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 84ch;
+}
+
+.vac-nota-reforco {
+  margin: 0; padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  color: var(--text-secondary);
+  font-size: var(--size-small); line-height: 1.6;
+}
+
+.vac-card-futuras { margin-top: var(--space-3); }

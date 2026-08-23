@@ -1,0 +1,160 @@
+/* Importação de extrato — a tela mais densa do app, então a hierarquia
+   trabalha por peso e espaço, não por mais cor. */
+
+.imp-passo1 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: end;
+}
+
+.imp-arquivo { display: flex; align-items: center; gap: var(--space-3); }
+
+.imp-botao-arquivo { cursor: pointer; }
+
+.imp-nome-arquivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--size-small);
+  color: var(--text-muted);
+}
+
+.imp-nota {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: var(--space-3) 0 0;
+  max-width: 78ch;
+}
+
+.imp-origem {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-3);
+}
+
+.imp-resultado,
+.imp-avisos {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.imp-resultado { border-left: 3px solid var(--confirma); color: var(--text-primary); }
+.imp-resultado svg { color: var(--confirma); flex-shrink: 0; margin-top: 2px; }
+.imp-resultado p { margin: 4px 0 0; font-size: var(--size-small); color: var(--text-muted); }
+
+.imp-avisos { border-left: 3px solid var(--atencao); }
+.imp-avisos svg { color: var(--atencao); flex-shrink: 0; margin-top: 2px; }
+.imp-avisos ul { margin: 0; padding-left: 18px; font-size: var(--size-small); color: var(--text-secondary); }
+.imp-avisos li { line-height: 1.55; }
+
+.imp-cabecalho-lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.imp-filtros { flex: 1; min-width: 0; }
+
+/* --- Tabela de conciliação ---------------------------------------------- */
+
+.imp-tabela { display: flex; flex-direction: column; }
+
+.imp-linha {
+  display: grid;
+  grid-template-columns: 20px 26px 84px minmax(0, 1fr) minmax(0, 190px) 108px;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 9px var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 120ms ease, opacity 120ms ease;
+}
+
+.imp-linha:last-child { border-bottom: none; }
+.imp-linha:hover { background: var(--surface-hover); }
+.imp-linha.desmarcada { opacity: .42; }
+.imp-linha.bloqueada { opacity: .38; }
+
+.imp-linha input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--brand-700);
+  cursor: pointer;
+}
+
+.imp-situacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+/* Cada situação tem um ícone próprio; a cor reforça, não carrega sozinha. */
+.imp-situacao-novo { background: var(--confirma-bg); color: var(--confirma); }
+.imp-situacao-confirma { background: var(--atencao-bg); color: var(--atencao); }
+.imp-situacao-confere { background: var(--bg-sunken); color: var(--text-muted); }
+.imp-situacao-ja_importado { background: var(--bg-sunken); color: var(--n-400); }
+
+.imp-data { font-size: var(--size-small); color: var(--text-muted); }
+
+.imp-descricao {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--size-body);
+  color: var(--text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.imp-correspondente {
+  font-style: normal;
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.imp-categoria { display: flex; align-items: center; gap: 6px; min-width: 0; }
+
+.imp-select-categoria {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-ui);
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px 6px;
+}
+
+.imp-select-categoria:focus { outline: none; border-color: var(--brand-700); box-shadow: var(--shadow-focus); }
+
+.imp-regra {
+  display: flex;
+  color: var(--brand-700);
+  flex-shrink: 0;
+}
+
+.imp-valor { text-align: right; font-size: var(--size-body); font-weight: 600; }
+.imp-valor.receita { color: var(--confirma); }
+.imp-valor.despesa { color: var(--text-primary); }
+
+.imp-divergencias { border-left: 3px solid var(--atencao); }
+
+@media (max-width: 900px) {
+  .imp-passo1 { grid-template-columns: 1fr; }
+  .imp-linha { grid-template-columns: 20px 26px minmax(0, 1fr) 100px; }
+  .imp-data, .imp-categoria { display: none; }
+  .imp-cabecalho-lista { flex-direction: column; align-items: stretch; }
+}

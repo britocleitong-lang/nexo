@@ -1,0 +1,238 @@
+/* Dashboard — um painel de boas-vindas, não um relatório. */
+
+.dash-saudacao {
+  font-size: 26px; font-weight: 800; letter-spacing: -.03em;
+  color: var(--text-primary); margin: 0;
+}
+.dash-data { font-size: var(--size-body); color: var(--text-muted); margin: 4px 0 var(--space-5); }
+
+/* --- Cartão principal: fundo tingido da marca ---------------------------- */
+
+.dash-principal {
+  background: linear-gradient(135deg, var(--brand-900) 0%, var(--brand-700) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  color: var(--text-on-brand);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-card);
+}
+.dash-principal-label { font-size: var(--size-small); font-weight: 600; color: var(--brand-300); }
+.dash-principal-valor {
+  font-family: var(--font-data); font-variant-numeric: tabular-nums;
+  font-size: var(--size-hero); font-weight: 700; letter-spacing: -.04em;
+  line-height: 1.05; margin-top: 6px;
+}
+.dash-principal-rodape {
+  display: flex; flex-wrap: wrap; gap: var(--space-5);
+  margin-top: var(--space-5); padding-top: var(--space-4);
+  border-top: 1px solid rgba(255,255,255,.16);
+}
+.dash-mini-label { font-size: var(--size-micro); font-weight: 600; color: var(--brand-300); }
+.dash-mini-valor {
+  font-family: var(--font-data); font-variant-numeric: tabular-nums;
+  font-size: var(--size-lead); font-weight: 700; letter-spacing: -.025em; margin-top: 2px;
+}
+
+/* --- Barra de fluxo ------------------------------------------------------- */
+
+.dash-fluxo-barra { display: flex; height: 7px; border-radius: var(--radius-pill); overflow: hidden; background: rgba(255,255,255,.18); margin-top: var(--space-4); }
+.dash-fluxo-gasto { background: var(--brand-300); transition: width .45s cubic-bezier(.32,.72,0,1); }
+.dash-fluxo-gasto.excedido { background: #f0a89c; }
+
+/* --- Lista de pendências --------------------------------------------------- */
+
+.dash-atencao-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+.dash-atencao-contagem {
+  font-family: var(--font-data); font-size: var(--size-micro); font-weight: 700;
+  background: var(--bg-sunken); color: var(--text-muted);
+  padding: 2px 9px; border-radius: var(--radius-pill);
+}
+
+.dash-item {
+  display: flex; align-items: center; gap: var(--space-3);
+  width: 100%; text-align: left; background: none; border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-3) var(--space-4); cursor: pointer;
+  font-family: var(--font-ui); transition: background-color .1s ease;
+}
+.dash-item:last-child { border-bottom: none; }
+.dash-item:hover { background: var(--surface-hover); }
+.dash-item-icone {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  background: var(--bg-sunken); color: var(--text-muted); flex-shrink: 0;
+}
+.dash-item-corpo { flex: 1; min-width: 0; }
+.dash-item-titulo { font-size: var(--size-body); font-weight: 600; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-item-origem { font-size: var(--size-small); color: var(--text-muted); }
+
+.dash-tudo-em-dia { display: flex; align-items: center; gap: 10px; padding: var(--space-5) var(--space-4); font-size: var(--size-body); color: var(--text-muted); }
+.dash-tudo-em-dia svg { color: var(--confirma); }
+
+.dash-resumo { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--space-4); }
+.dash-resumo a { text-decoration: none; color: inherit; display: block; }
+
+@media (max-width: 640px) {
+  .dash-principal-valor { font-size: 34px; }
+  .dash-resumo { grid-template-columns: 1fr; }
+}
+
+/* =====================================================================
+   Briefing do assistente e itens de atenção acionáveis (v12)
+   ===================================================================== */
+
+/* --- Item de atenção com ações inline ------------------------------------ */
+
+.dash-item {
+  display: flex;
+  align-items: center;
+  border-left: 3px solid transparent;
+}
+
+.dash-item.sev-atrasado { border-left-color: var(--alerta); }
+.dash-item.sev-urgente { border-left-color: var(--atencao); }
+
+.dash-item-principal {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+  padding: 10px var(--space-2);
+  background: none;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 120ms ease;
+}
+
+.dash-item-principal:hover { background: var(--surface-hover); }
+
+.dash-item-acoes {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  padding-right: var(--space-2);
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.dash-item:hover .dash-item-acoes,
+.dash-item:focus-within .dash-item-acoes { opacity: 1; }
+
+.dash-ver-todos { margin-left: auto; }
+
+@media (max-width: 720px) {
+  .dash-item-acoes { opacity: 1; }
+}
+
+/* O card de saldo é a primeira coisa que se lê; o link pra projeção fica no
+   canto, disponível sem competir com o número. */
+.dash-principal { position: relative; }
+
+.dash-ver-projecao {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.16);
+  color: inherit;
+  font-size: var(--size-small);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 140ms ease;
+}
+
+.dash-ver-projecao:hover { background: rgba(255, 255, 255, 0.26); }
+
+@media (max-width: 560px) {
+  .dash-ver-projecao { top: var(--space-3); right: var(--space-3); padding: 4px 9px; }
+}
+
+/* =====================================================================
+   Avisos + veículos lado a lado
+   ===================================================================== */
+
+.dash-colunas {
+  display: grid;
+  /* Avisos ganham mais espaço porque as linhas têm texto que trunca;
+     veículos são cards de largura previsível. */
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.dash-coluna { min-width: 0; }
+
+/* --- Veículo maior, no formato faceplate ---------------------------------- */
+
+.dash-veiculos { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.dash-veiculo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.dash-veiculo:hover {
+  border-color: var(--brand-300);
+  box-shadow: var(--shadow-pop);
+  transform: translateY(-1px);
+}
+
+.dash-veiculo-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 104px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.dash-veiculo-foto img { width: 100%; height: 100%; object-fit: cover; }
+
+.dash-veiculo-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.dash-veiculo-nome {
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-veiculo-meta { font-size: var(--size-micro); color: var(--text-muted); }
+
+.dash-veiculo-km {
+  margin-top: 2px;
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+@media (max-width: 1080px) {
+  /* Abaixo disso a coluna de avisos fica estreita demais e os títulos
+     começam a truncar em duas palavras. Melhor empilhar. */
+  .dash-colunas { grid-template-columns: minmax(0, 1fr); }
+}

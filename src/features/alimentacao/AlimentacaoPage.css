@@ -1,0 +1,179 @@
+/* Alimentação — registro é feito várias vezes ao dia, então a prioridade é
+   quantos toques leva pra anotar. Nada de decoração no caminho. */
+
+.ali-navegador { display: flex; align-items: center; gap: var(--space-3); }
+.ali-data { font-size: var(--size-lead); font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+
+/* --- Água ---------------------------------------------------------------- */
+
+.ali-agua-topo { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+
+.ali-agua-icone {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: var(--radius-md);
+  background: #e3f0f7; color: #2f6b8a; flex-shrink: 0;
+}
+
+:root[data-theme="dark"] .ali-agua-icone { background: #1b2c35; color: #7fb8d4; }
+
+.ali-agua-topo > div { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ali-agua-topo strong { font-size: var(--size-body); color: var(--text-primary); }
+.ali-agua-topo span { font-size: var(--size-small); color: var(--text-muted); }
+.ali-agua-acoes { display: flex; gap: var(--space-2); align-items: center; }
+
+.ali-copos { display: flex; gap: 5px; margin-top: var(--space-3); flex-wrap: wrap; }
+
+.ali-copo {
+  width: 16px; height: 22px;
+  border-radius: 3px 3px 6px 6px;
+  border: 1.5px solid var(--border-strong);
+  background: transparent;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.ali-copo.cheio { background: #7fb8d4; border-color: #5a9ab8; }
+
+/* --- Refeições ------------------------------------------------------------ */
+
+.ali-refeicao-header {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.ali-refeicao-header h3 {
+  display: flex; align-items: center; gap: 7px;
+  margin: 0; flex: 1;
+  font-size: var(--size-lead); font-weight: 700;
+  color: var(--text-primary); letter-spacing: -0.01em;
+}
+
+.ali-refeicao-header svg { color: var(--hue-pessoal); }
+.ali-refeicao-kcal { font-size: var(--size-body); font-weight: 700; color: var(--text-secondary); }
+
+.ali-itens { display: flex; flex-direction: column; }
+
+.ali-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 56px 30px;
+  gap: var(--space-3);
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.ali-item:last-child { border-bottom: none; }
+.ali-item-corpo { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.ali-item-nome { font-size: var(--size-body); color: var(--text-primary); font-weight: 600; }
+.ali-item-qtd { font-size: var(--size-micro); color: var(--text-muted); }
+
+.ali-item-macros { display: flex; gap: 8px; }
+.ali-item-macros em {
+  font-style: normal;
+  font-family: var(--font-data);
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+}
+
+.ali-item-kcal { text-align: right; font-weight: 700; color: var(--text-primary); font-size: var(--size-small); }
+
+.ali-add {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; margin-top: var(--space-3); padding: 8px;
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+  background: none; color: var(--text-muted);
+  font-family: inherit; font-size: var(--size-small); cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.ali-add:hover { border-color: var(--brand-700); color: var(--brand-700); background: var(--brand-50); }
+
+.ali-vazio { font-size: var(--size-small); color: var(--text-muted); margin: 0; padding: var(--space-2) 0; }
+
+/* --- Busca de alimento ---------------------------------------------------- */
+
+.ali-busca-campo { position: relative; display: flex; align-items: center; }
+.ali-busca-campo svg { position: absolute; left: 11px; color: var(--text-muted); pointer-events: none; }
+.ali-busca-campo .input { padding-left: 34px; }
+
+.ali-resultados {
+  display: flex; flex-direction: column;
+  max-height: 40vh; overflow-y: auto;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+}
+
+.ali-resultado {
+  padding: 9px var(--space-3);
+  border: none; border-bottom: 1px solid var(--border-subtle);
+  background: none; text-align: left; font-family: inherit; cursor: pointer;
+}
+
+.ali-resultado:last-child { border-bottom: none; }
+.ali-resultado:hover { background: var(--surface-hover); }
+.ali-resultado-corpo { display: flex; flex-direction: column; gap: 2px; }
+
+.ali-resultado-nome {
+  display: flex; align-items: center; gap: 5px;
+  font-size: var(--size-body); font-weight: 600; color: var(--text-primary);
+}
+
+.ali-estrela { color: var(--atencao); }
+.ali-resultado-meta { font-size: var(--size-micro); color: var(--text-muted); }
+
+.ali-preview {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3);
+  padding: var(--space-3); border-radius: var(--radius-md); background: var(--bg-sunken);
+}
+
+.ali-preview div { display: flex; flex-direction: column; gap: 2px; }
+.ali-preview span { font-size: var(--size-micro); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.ali-preview strong { font-size: var(--size-body); color: var(--text-primary); font-family: var(--font-data); }
+
+.ali-form-novo { border-top: 1px dashed var(--border-subtle); padding-top: var(--space-4); }
+
+/* --- Referência energética ------------------------------------------------ */
+
+.ali-referencia { border-left: 3px solid var(--border-strong); }
+.ali-referencia-topo { display: flex; gap: var(--space-3); align-items: flex-start; }
+
+.ali-referencia-icone {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: var(--radius-md);
+  background: var(--bg-sunken); color: var(--text-muted); flex-shrink: 0;
+}
+
+.ali-referencia-topo > div { flex: 1; min-width: 0; }
+.ali-referencia-topo strong { font-size: var(--size-body); color: var(--text-primary); }
+.ali-referencia-topo p {
+  margin: 4px 0 0; font-size: var(--size-small);
+  color: var(--text-muted); line-height: 1.55; max-width: 74ch;
+}
+
+.ali-resultado-calc {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);
+  padding: var(--space-4); border-radius: var(--radius-md); background: var(--bg-sunken);
+}
+
+.ali-resultado-calc div { display: flex; flex-direction: column; gap: 2px; }
+.ali-resultado-calc span { font-size: var(--size-micro); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.ali-resultado-calc strong { font-size: var(--size-figure); color: var(--text-primary); letter-spacing: -0.02em; font-family: var(--font-data); }
+.ali-resultado-calc em { font-style: normal; font-size: var(--size-micro); color: var(--text-muted); }
+
+/* O aviso é forte de propósito: quem lê um número de calorias tende a
+   tratá-lo como verdade. Ele não é. */
+.ali-aviso-forte {
+  margin: 0; padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--atencao-bg); color: var(--atencao);
+  font-size: var(--size-small); line-height: 1.6;
+}
+
+.ali-nota {
+  margin: var(--space-3) 0 0;
+  font-size: var(--size-small); color: var(--text-muted); line-height: 1.6; max-width: 80ch;
+}
+
+@media (max-width: 720px) {
+  .ali-item { grid-template-columns: minmax(0, 1fr) 50px 28px; }
+  .ali-item-macros { display: none; }
+  .ali-preview, .ali-resultado-calc { grid-template-columns: 1fr 1fr; }
+}

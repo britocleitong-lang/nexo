@@ -1,0 +1,296 @@
+/* Casca do aplicativo — barra lateral clara, com cor como endereço. */
+
+.shell { display: flex; height: 100%; background: var(--bg-app); }
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column;
+  padding: var(--space-4) var(--space-3);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* --- Marca ------------------------------------------------------------ */
+
+.brand { display: flex; align-items: center; gap: 10px; padding: var(--space-2) var(--space-2) var(--space-4); }
+.brand-mark {
+  width: 30px; height: 30px; border-radius: 9px;
+  background: var(--brand-700); color: var(--text-on-brand);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 15px; letter-spacing: -.04em; flex-shrink: 0;
+}
+.brand-name { font-size: var(--size-lead); font-weight: 800; letter-spacing: -.03em; color: var(--text-primary); }
+
+/* --- Busca ------------------------------------------------------------- */
+
+.search-trigger {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  background: var(--bg-sunken); border: 1px solid transparent;
+  border-radius: var(--radius-md); padding: 9px 11px;
+  color: var(--text-muted); font-family: var(--font-ui); font-size: var(--size-small); font-weight: 500;
+  cursor: pointer; margin-bottom: var(--space-4);
+  transition: background-color .12s ease, border-color .12s ease;
+}
+.search-trigger:hover { border-color: var(--border-strong); }
+.search-atalho {
+  margin-left: auto; font-family: var(--font-data); font-size: 10.5px; font-weight: 600;
+  color: var(--text-muted); background: var(--bg-card);
+  border: 1px solid var(--border-subtle); border-radius: 5px; padding: 1px 5px;
+}
+
+/* --- Navegação ---------------------------------------------------------- */
+
+.nav { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--radius-md);
+  color: var(--text-secondary); text-decoration: none;
+  font-size: var(--size-body); font-weight: 500;
+  transition: background-color .12s ease, color .12s ease;
+}
+.nav-item:hover { background: var(--bg-sunken); color: var(--text-primary); }
+.nav-item svg { flex-shrink: 0; color: var(--text-muted); transition: color .12s ease; }
+.nav-item:hover svg { color: var(--hue-grupo, var(--brand-700)); }
+
+/* Item ativo: fundo tingido com a cor do grupo — a cor diz ONDE você está */
+.nav-item.active {
+  background: color-mix(in srgb, var(--hue-grupo, var(--brand-700)) 11%, transparent);
+  color: var(--hue-grupo, var(--brand-700));
+  font-weight: 700;
+}
+.nav-item.active svg { color: var(--hue-grupo, var(--brand-700)); }
+.nav-item:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+/* --- Grupos ------------------------------------------------------------- */
+
+.nav-grupo { margin-top: var(--space-4); }
+.nav-grupo:first-of-type { margin-top: var(--space-1); }
+.nav-grupo-header {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  background: none; border: none; padding: 4px 10px 6px;
+  font-family: var(--font-ui); font-size: var(--size-micro); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text-muted); cursor: pointer;
+  transition: color .12s ease;
+}
+.nav-grupo-header:hover { color: var(--hue-grupo, var(--text-primary)); }
+.nav-grupo-chevron { transition: transform .18s cubic-bezier(.32,.72,0,1); opacity: .55; }
+.nav-grupo-chevron.aberto { transform: rotate(180deg); }
+.nav-grupo-itens { display: flex; flex-direction: column; gap: 1px; }
+
+.nav-separador { height: 1px; background: var(--border-subtle); margin: var(--space-4) 10px; }
+
+.sidebar-footer { border-top: 1px solid var(--border-subtle); padding-top: var(--space-2); margin-top: var(--space-3); }
+
+/* --- Conteúdo ------------------------------------------------------------ */
+
+.content { flex: 1; overflow-y: auto; padding: var(--space-6) var(--space-6) var(--space-7); }
+.content > * { max-width: var(--content-max); margin-inline: auto; }
+
+/* --- Responsivo ---------------------------------------------------------- */
+
+@media (max-width: 1040px) {
+  .sidebar { width: 64px; padding: var(--space-3) var(--space-2); }
+  .brand-name, .search-trigger span, .search-atalho, .nav-item span, .nav-grupo-header span { display: none; }
+  .nav-item { justify-content: center; padding: 10px; }
+  .nav-grupo-header { justify-content: center; padding: 6px; }
+  .nav-grupo-chevron { display: none; }
+  .search-trigger { justify-content: center; padding: 9px; }
+  .brand { justify-content: center; padding: var(--space-1) 0 var(--space-3); }
+  .content { padding: var(--space-5) var(--space-4) var(--space-6); }
+}
+@media (max-width: 640px) {
+  .shell { flex-direction: column; }
+  .sidebar {
+    width: 100%; flex-direction: row; align-items: center; gap: var(--space-1);
+    padding: var(--space-2); overflow-x: auto; order: 2;
+    border-right: none; border-top: 1px solid var(--border-subtle);
+  }
+  .brand, .nav-grupo-header, .nav-separador, .search-trigger { display: none; }
+  .nav { flex-direction: row; gap: var(--space-1); }
+  .nav-grupo { margin-top: 0; }
+  .nav-grupo-itens { flex-direction: row; gap: var(--space-1); }
+  .sidebar-footer { border: none; margin: 0; padding: 0; }
+  .content { order: 1; padding: var(--space-4) var(--space-3); }
+}
+
+/* --- Busca + olho de visibilidade, lado a lado ----------------------------- */
+
+.sidebar-acoes { display: flex; gap: 6px; margin-bottom: var(--space-4); }
+.sidebar-acoes .search-trigger { margin-bottom: 0; flex: 1; }
+
+.olho-trigger {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; flex-shrink: 0;
+  background: var(--bg-sunken); border: 1px solid transparent;
+  border-radius: var(--radius-md); color: var(--text-muted); cursor: pointer;
+  transition: background-color .12s ease, color .12s ease, border-color .12s ease;
+}
+.olho-trigger:hover { border-color: var(--border-strong); color: var(--text-primary); }
+.olho-trigger.visivel { color: var(--brand-700); background: var(--brand-50); }
+
+@media (max-width: 1040px) {
+  .sidebar-acoes { flex-direction: column; }
+  .olho-trigger { width: 100%; }
+}
+
+/* =====================================================================
+   Badges de aviso, faixa de modo leitura e painel de atalhos (v12)
+   ===================================================================== */
+
+/* O badge é numérico no item "Avisos" e vira um ponto nos grupos fechados.
+   Duas formas diferentes de propósito: número onde cabe contar, ponto onde
+   só importa saber que existe algo lá dentro. */
+.nav-badge {
+  margin-left: auto;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
+  font-size: 10.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.nav-badge.critico { background: var(--alerta); color: var(--n-0); }
+
+.nav-item.active .nav-badge { background: rgba(255, 255, 255, 0.22); color: inherit; }
+.nav-item.active .nav-badge.critico { background: var(--alerta); color: var(--n-0); }
+
+.nav-grupo-ponto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--alerta);
+  margin-left: auto;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* Botão que se comporta como item de menu (Atalhos). */
+.nav-item-botao {
+  width: 100%;
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* --- Faixa de modo leitura ---------------------------------------------- */
+
+.faixa-leitura {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: var(--space-5);
+  padding: 10px var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--atencao-bg);
+  border: 1px solid var(--atencao);
+  color: var(--atencao);
+  font-size: var(--size-small);
+  line-height: 1.5;
+}
+
+.faixa-leitura svg { flex-shrink: 0; margin-top: 2px; }
+
+/* --- Painel de atalhos --------------------------------------------------- */
+
+.atalhos-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 31, 28, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  z-index: 90;
+}
+
+.atalhos-painel {
+  width: min(720px, 100%);
+  max-height: 82vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-pop);
+  padding: var(--space-5);
+}
+
+.atalhos-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.atalhos-cabecalho h2 {
+  margin: 0;
+  font-size: var(--size-title);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.atalhos-nota {
+  margin: 0 0 var(--space-5);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 68ch;
+}
+
+.atalhos-grupos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--space-5);
+}
+
+.atalhos-grupo h3 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--size-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.atalhos-linha {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 5px 0;
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+}
+
+.atalhos-teclas { display: inline-flex; gap: 3px; flex-shrink: 0; min-width: 62px; }
+
+.atalhos-painel kbd,
+.atalhos-nota kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 5px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+}

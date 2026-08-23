@@ -1,0 +1,93 @@
+/* Prefixo fp- de propósito: ui.css já tem uma .foto-preview genérica, e
+   sem o prefixo as duas se sobrescreviam dependendo da ordem de import.
+
+   Seletor de foto — preview grande o suficiente pra pessoa julgar o
+   enquadramento antes de salvar, e botões com alvo de toque decente. */
+
+.fp-picker { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.fp-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.fp-preview.paisagem { aspect-ratio: 16 / 9; }
+.fp-preview.quadrado { aspect-ratio: 1 / 1; max-width: 240px; }
+
+.fp-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.fp-vazia { font-size: var(--size-small); color: var(--text-muted); }
+.fp-processando { color: var(--brand-700); }
+
+.girando { animation: fp-girar 900ms linear infinite; }
+@keyframes fp-girar { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .girando { animation: none; }
+}
+
+.fp-acoes { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.fp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: var(--size-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.fp-btn:hover:not(:disabled) { border-color: var(--brand-700); color: var(--brand-700); background: var(--brand-50); }
+.fp-btn:disabled { opacity: .5; cursor: default; }
+.fp-btn.sutil { border-style: dashed; }
+.fp-btn.perigo:hover { border-color: var(--alerta); color: var(--alerta); background: var(--alerta-bg); }
+
+.fp-link { display: flex; gap: var(--space-2); }
+.fp-link .input { flex: 1; }
+
+.fp-erro {
+  margin: 0;
+  padding: 8px var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--atencao-bg);
+  color: var(--atencao);
+  font-size: var(--size-small);
+  line-height: 1.5;
+}
+
+.fp-info {
+  margin: 0;
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Xadrez padrão de editor de imagem — deixa óbvio o que é fundo vazado
+   e o que é fundo branco de verdade. */
+.fp-preview.transparente {
+  background-color: var(--bg-card);
+  background-image:
+    linear-gradient(45deg, var(--bg-sunken) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg-sunken) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg-sunken) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg-sunken) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+/* Imagem com transparência não deve ser cortada: uma logo ou recorte
+   perde o sentido se as bordas saírem. `contain` preserva a peça inteira. */
+.fp-preview.transparente img { object-fit: contain; padding: var(--space-2); }

@@ -1,0 +1,243 @@
+/* Treinos — a tela de sessão ativa é usada de pé, com o celular na mão,
+   entre uma série e outra. Alvos grandes, hierarquia curta, zero decoração. */
+
+.treino-comecar { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; justify-content: center; }
+.treino-btn-topo { margin-bottom: var(--space-4); }
+
+.treino-ativo { border-left: 3px solid var(--confirma); }
+
+.treino-ativo-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.treino-ativo-selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--confirma-bg);
+  color: var(--confirma);
+  font-size: var(--size-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.treino-ativo-topo h2 {
+  margin: 8px 0 2px;
+  font-size: var(--size-title);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.treino-ativo-topo p { margin: 0; font-size: var(--size-small); color: var(--text-muted); }
+.treino-ativo-acoes { display: flex; gap: var(--space-2); align-items: center; }
+
+.treino-exercicio-nome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 var(--space-3);
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.treino-exercicio-nome svg { color: var(--hue-pessoal); }
+
+/* --- Grade de séries ----------------------------------------------------- */
+
+.treino-series { display: flex; flex-direction: column; gap: 4px; }
+
+.treino-serie {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr) 80px 36px 32px;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.treino-serie-cabecalho {
+  font-size: var(--size-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 700;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 4px;
+}
+
+.treino-serie-cabecalho > span:nth-child(4) { text-align: right; }
+
+.treino-serie-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  font-size: var(--size-small);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* Série feita fica visivelmente resolvida — é o feedback que faz a pessoa
+   saber onde parou quando volta do descanso. */
+.treino-serie.feita .treino-serie-num { background: var(--confirma-bg); color: var(--confirma); }
+.treino-serie.feita .input { background: var(--confirma-bg); border-color: transparent; }
+
+.treino-serie .input { text-align: center; padding: 7px 8px; }
+
+.treino-rm { text-align: right; font-size: var(--size-small); color: var(--text-muted); }
+
+.treino-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.treino-check:hover { border-color: var(--confirma); color: var(--confirma); }
+.treino-check.ativo { background: var(--confirma); border-color: var(--confirma); color: var(--n-0); }
+
+.treino-add-serie {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: 8px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: var(--size-small);
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.treino-add-serie:hover { border-color: var(--brand-700); color: var(--brand-700); background: var(--brand-50); }
+
+/* --- Seletor de exercício ------------------------------------------------ */
+
+.treino-lista-exercicios {
+  display: flex;
+  flex-direction: column;
+  max-height: 42vh;
+  overflow-y: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.treino-item-exercicio {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px var(--space-3);
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  background: none;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.treino-item-exercicio:last-child { border-bottom: none; }
+.treino-item-exercicio:hover { background: var(--surface-hover); }
+.treino-item-nome { font-size: var(--size-body); font-weight: 600; color: var(--text-primary); }
+.treino-item-meta { font-size: var(--size-micro); color: var(--text-muted); }
+
+.treino-vazio { font-size: var(--size-small); color: var(--text-muted); padding: var(--space-3); margin: 0; }
+
+/* --- Rotinas -------------------------------------------------------------- */
+
+.treino-rotina-topo { display: flex; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+.treino-rotina-topo h3 { margin: 0; font-size: var(--size-lead); color: var(--text-primary); letter-spacing: -0.01em; }
+.treino-rotina-topo p { margin: 3px 0 0; font-size: var(--size-small); color: var(--text-muted); }
+
+.treino-rotina-itens { display: flex; flex-direction: column; }
+
+.treino-rotina-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--size-small);
+  color: var(--text-primary);
+}
+
+.treino-rotina-item > span:first-child { flex: 1; }
+.treino-rotina-alvo {
+  font-family: var(--font-data);
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  background: var(--bg-sunken);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+}
+
+/* --- Progresso ------------------------------------------------------------ */
+
+.treino-icone-sessao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  color: var(--hue-pessoal);
+  flex-shrink: 0;
+}
+
+.treino-grupos { display: flex; flex-direction: column; gap: 9px; }
+
+.treino-grupo-linha {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) 44px;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: var(--size-small);
+}
+
+.treino-grupo-nome { color: var(--text-secondary); font-weight: 600; }
+.treino-grupo-barra-fundo { height: 8px; border-radius: var(--radius-pill); background: var(--bg-sunken); overflow: hidden; }
+.treino-grupo-barra { height: 100%; border-radius: var(--radius-pill); background: var(--hue-pessoal); }
+.treino-grupo-valor { text-align: right; color: var(--text-muted); }
+
+.treino-pr { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.treino-pr span { font-size: var(--size-lead); font-weight: 700; color: var(--text-primary); }
+.treino-pr em { font-style: normal; font-size: var(--size-micro); color: var(--text-muted); }
+
+.treino-nota {
+  margin: var(--space-4) 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border-subtle);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 80ch;
+}
+
+@media (max-width: 720px) {
+  .treino-serie { grid-template-columns: 30px minmax(0, 1fr) minmax(0, 1fr) 36px 30px; }
+  .treino-rm, .treino-serie-cabecalho > span:nth-child(4) { display: none; }
+  .treino-grupo-linha { grid-template-columns: 84px minmax(0, 1fr) 38px; }
+}

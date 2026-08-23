@@ -1,0 +1,161 @@
+/* Metas — cartão com hierarquia clara: nome, número grande, barra, e a
+   frase que responde "o que eu faço com isso". */
+
+.meta-resumo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.meta-resumo.apertado { border-left: 3px solid var(--atencao); }
+
+.meta-resumo-label {
+  display: block;
+  font-size: var(--size-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 650;
+  margin-bottom: 4px;
+}
+
+.meta-resumo strong {
+  font-size: var(--size-figure);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.meta-resumo strong.insuficiente { color: var(--atencao); }
+
+.meta-resumo-aviso {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border-subtle);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* --- Cartão da meta ------------------------------------------------------ */
+
+.meta-card { position: relative; }
+.meta-card.concluida { background: var(--confirma-bg); border-color: var(--confirma); }
+
+.meta-card-topo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.meta-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  color: var(--hue-financeiro);
+  flex-shrink: 0;
+}
+
+.meta-card.concluida .meta-icone { background: var(--confirma); color: var(--n-0); }
+
+.meta-titulo-bloco { flex: 1; min-width: 0; }
+
+.meta-nome {
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 3px;
+  letter-spacing: -0.01em;
+}
+
+/* A fonte do número importa tanto quanto o número: meta com progresso
+   manual envelhece, meta lida do investimento não. A tela diz qual é qual. */
+.meta-fonte {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+}
+
+.meta-valores {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: var(--space-3);
+}
+
+.meta-atual {
+  font-size: var(--size-figure);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+.meta-alvo { font-size: var(--size-small); color: var(--text-muted); }
+
+.meta-barra-fundo {
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-sunken);
+  overflow: hidden;
+}
+
+.meta-barra {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--brand-700);
+  transition: width 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.meta-barra.cheia { background: var(--confirma); }
+
+.meta-linha-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+}
+
+.meta-rodape {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.meta-necessario {
+  margin: 0;
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.meta-necessario strong { color: var(--text-primary); font-weight: 700; }
+.meta-necessario em { font-style: normal; color: var(--atencao); }
+.meta-necessario em.cabe { color: var(--confirma); }
+
+.meta-acoes {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.meta-card:hover .meta-acoes,
+.meta-card:focus-within .meta-acoes { opacity: 1; }
+
+.meta-ver-concluidas { margin-top: var(--space-4); }
+
+@media (max-width: 720px) {
+  .meta-resumo { grid-template-columns: 1fr; gap: var(--space-4); }
+  .meta-acoes { opacity: 1; }
+}

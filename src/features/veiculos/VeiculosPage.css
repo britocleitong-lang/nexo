@@ -1,0 +1,166 @@
+/* Faceplate horizontal — o veículo ocupa a linha inteira.
+   A leitura é sempre da esquerda pra direita, na mesma ordem:
+   foto → o que é → quanto vale → em que estado → o que fazer. */
+
+.vei-lista { display: flex; flex-direction: column; gap: var(--space-3); }
+.vei-lista-vendidos { margin-top: var(--space-3); }
+
+.vei-face {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.vei-face:hover { border-color: var(--brand-300); box-shadow: var(--shadow-pop); }
+
+/* Vendido some do primeiro plano sem sumir da tela: continua legível,
+   mas o olho entende de cara que não é o assunto principal. */
+.vei-face.vendido { opacity: .62; background: var(--bg-sunken); }
+.vei-face.vendido:hover { opacity: 1; }
+
+.vei-face-corpo {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) minmax(0, 180px) 92px 20px;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vei-face-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 62px;
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  overflow: hidden;
+}
+
+.vei-face-foto img { width: 100%; height: 100%; object-fit: cover; }
+
+.vei-face-identidade { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+.vei-face-modelo {
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vei-face-detalhe {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vei-face-valor { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+
+.vei-face-valor-num {
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+
+.vei-face-valor-label,
+.vei-face-gasto { font-size: var(--size-micro); color: var(--text-muted); }
+.vei-face-gasto { margin-top: 2px; }
+
+.vei-face-status { display: flex; justify-content: flex-end; }
+.vei-face-seta { color: var(--text-muted); flex-shrink: 0; }
+
+.vei-face-acoes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 var(--space-3);
+  border-left: 1px solid var(--border-subtle);
+}
+
+/* --- Formulários ---------------------------------------------------------- */
+
+.vei-btn-fipe {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px dashed var(--brand-300);
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.vei-btn-fipe:hover { background: var(--brand-100); }
+.vei-btn-fipe svg { flex-shrink: 0; }
+.vei-btn-fipe span { display: flex; flex-direction: column; gap: 2px; }
+.vei-btn-fipe strong { font-size: var(--size-body); }
+.vei-btn-fipe em { font-style: normal; font-size: var(--size-micro); color: var(--text-muted); }
+
+.vei-nota-venda {
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.vei-resultado-venda {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--confirma-bg);
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+}
+
+.vei-resultado-venda.prejuizo { background: var(--alerta-bg); }
+.vei-resultado-venda strong { font-size: var(--size-lead); color: var(--text-primary); }
+
+.vei-checkbox {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.vei-checkbox input { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--brand-700); flex-shrink: 0; }
+.vei-checkbox span { display: flex; flex-direction: column; gap: 3px; }
+.vei-checkbox strong { font-size: var(--size-body); color: var(--text-primary); }
+.vei-checkbox em { font-style: normal; font-size: var(--size-small); color: var(--text-muted); line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .vei-face-corpo { grid-template-columns: 68px minmax(0, 1fr) minmax(0, 120px); gap: var(--space-3); }
+  .vei-face-foto { width: 68px; height: 48px; }
+  .vei-face-status, .vei-face-seta { display: none; }
+  .vei-face-acoes { padding: 0 var(--space-2); }
+}

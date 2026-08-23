@@ -1,0 +1,161 @@
+/* Recorrências — usa o matiz do grupo Financeiro como endereço visual. */
+
+.rec-pendentes {
+  border-color: var(--atencao);
+  /* A faixa lateral é o sinal de "isto pede decisão", pela forma e não só
+     pela cor — mesma lógica das pastilhas de alerta do resto do app. */
+  border-left: 3px solid var(--atencao);
+}
+
+.rec-pendentes-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.rec-pendentes-titulo {
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.rec-pendentes-sub {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 62ch;
+  line-height: 1.5;
+}
+
+.rec-pendentes-lista {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.rec-pendente-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background 120ms ease, opacity 120ms ease;
+}
+
+.rec-pendente-item:last-child { border-bottom: none; }
+.rec-pendente-item:hover { background: var(--surface-hover); }
+.rec-pendente-item.ignorada { opacity: .45; }
+
+.rec-pendente-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--brand-700);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.rec-pendente-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.rec-pendente-desc {
+  font-size: var(--size-body);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.rec-pendente-meta {
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+}
+
+.rec-pendente-valor {
+  font-size: var(--size-body);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rec-pendente-valor.receita { color: var(--confirma); }
+.rec-pendente-valor.despesa { color: var(--text-primary); }
+
+.rec-pendentes-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border-subtle);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+}
+
+.rec-pendentes-rodape strong { font-size: var(--size-lead); }
+.rec-pendentes-rodape .positivo { color: var(--confirma); }
+.rec-pendentes-rodape .negativo { color: var(--alerta); }
+
+/* --- Lista de moldes ---------------------------------------------------- */
+
+.rec-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+}
+
+.rec-icone.receita { background: var(--confirma-bg); color: var(--confirma); }
+.rec-icone.despesa { background: var(--brand-50); color: var(--hue-financeiro); }
+
+.list-row.rec-inativa { opacity: .5; }
+
+.list-row-value.receita { color: var(--confirma); }
+.list-row-value.despesa { color: var(--text-primary); }
+
+/* --- Caixa de opção explicada ------------------------------------------- */
+
+.rec-checkbox {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  cursor: pointer;
+}
+
+.rec-checkbox input {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: var(--brand-700);
+  flex-shrink: 0;
+}
+
+.rec-checkbox span { display: flex; flex-direction: column; gap: 4px; }
+.rec-checkbox strong { font-size: var(--size-body); color: var(--text-primary); }
+.rec-checkbox em {
+  font-style: normal;
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  .rec-pendentes-topo { flex-direction: column; }
+}

@@ -1,0 +1,118 @@
+/* Projeção — o assunto é incerteza, então o visual precisa distinguir
+   o que é fato do que é estimativa. Estimativa vem sempre mais leve. */
+
+.proj-alerta {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.proj-alerta.negativo { border-left: 3px solid var(--alerta); }
+.proj-alerta.aperto { border-left: 3px solid var(--atencao); }
+
+.proj-alerta-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.proj-alerta.negativo .proj-alerta-icone { background: var(--alerta-bg); color: var(--alerta); }
+.proj-alerta.aperto .proj-alerta-icone { background: var(--atencao-bg); color: var(--atencao); }
+
+.proj-alerta strong {
+  display: block;
+  font-size: var(--size-lead);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.proj-alerta p {
+  margin: 4px 0 0;
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 76ch;
+}
+
+.proj-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.proj-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.proj-toggle input { width: 15px; height: 15px; accent-color: var(--brand-700); }
+
+.proj-metodologia {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: var(--space-4) 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border-subtle);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.proj-metodologia svg { flex-shrink: 0; margin-top: 3px; }
+.proj-metodologia strong { color: var(--text-secondary); font-weight: 650; }
+
+/* --- Tabela mês a mês ---------------------------------------------------- */
+
+.proj-tabela { display: flex; flex-direction: column; }
+
+.proj-linha {
+  display: grid;
+  grid-template-columns: minmax(70px, 0.8fr) repeat(5, minmax(0, 1fr));
+  gap: var(--space-3);
+  align-items: center;
+  padding: 10px var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--size-small);
+}
+
+.proj-linha:last-child { border-bottom: none; }
+.proj-linha > span:not(:first-child) { text-align: right; }
+
+.proj-cabecalho-tabela {
+  font-size: var(--size-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 650;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.proj-mes { font-weight: 650; color: var(--text-primary); }
+
+/* Estimativa em peso menor: o olho lê primeiro o que é certo. */
+.proj-suave { color: var(--text-muted); font-weight: 400; }
+
+.proj-verde { color: var(--confirma); font-weight: 600; }
+.proj-vermelho { color: var(--alerta); font-weight: 600; }
+.proj-saldo { font-weight: 700; color: var(--text-primary); }
+
+.proj-linha.negativo { background: var(--alerta-bg); }
+
+@media (max-width: 860px) {
+  .proj-linha { grid-template-columns: minmax(60px, 0.9fr) repeat(2, minmax(0, 1fr)); }
+  .proj-linha > span:nth-child(2),
+  .proj-linha > span:nth-child(3),
+  .proj-linha > span:nth-child(4) { display: none; }
+  .proj-cabecalho { flex-direction: column; align-items: flex-start; }
+}

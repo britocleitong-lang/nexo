@@ -1,0 +1,108 @@
+/* Sincronização — a única tela do app onde texto explicativo se justifica:
+   é configuração feita uma vez, com passos externos, e errar custa tempo. */
+
+.sinc-card { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.sinc-topo { display: flex; gap: var(--space-3); align-items: flex-start; }
+
+.sinc-icone {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: var(--radius-md);
+  background: var(--bg-sunken); color: var(--text-muted); flex-shrink: 0;
+}
+
+.sinc-icone.ligado { background: var(--confirma-bg); color: var(--confirma); }
+
+.sinc-cabecalho strong { font-size: var(--size-lead); color: var(--text-primary); letter-spacing: -0.01em; }
+.sinc-cabecalho p { margin: 3px 0 0; font-size: var(--size-small); color: var(--text-muted); line-height: 1.55; }
+
+.sinc-como h4,
+.sinc-aparelhos h4 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--size-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.sinc-como p {
+  margin: 0 0 var(--space-2);
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 82ch;
+}
+
+.sinc-como p:last-child { margin-bottom: 0; }
+
+/* A ressalva não é rodapé em letra miúda: é a informação que evita a
+   pessoa descobrir o limite do jeito errado. */
+.sinc-ressalva {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--atencao-bg);
+  color: var(--text-secondary);
+}
+
+.sinc-ressalva strong { color: var(--atencao); }
+
+.sinc-linha { display: flex; gap: var(--space-2); align-items: center; }
+.sinc-linha .input { flex: 1; min-width: 0; }
+
+.sinc-passos {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 82ch;
+}
+
+.sinc-passos code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--size-micro);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+}
+
+.sinc-passos a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--brand-700);
+}
+
+.sinc-ok,
+.sinc-erro {
+  display: flex; align-items: center; gap: 7px;
+  margin: 0; padding: 9px var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--size-small);
+  line-height: 1.5;
+}
+
+.sinc-ok { background: var(--confirma-bg); color: var(--confirma); }
+.sinc-erro { background: var(--alerta-bg); color: var(--alerta); }
+
+.sinc-aparelhos { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.sinc-aparelho {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: 9px var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.sinc-aparelho > svg { color: var(--text-muted); flex-shrink: 0; }
+.sinc-aparelho-info { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+.sinc-aparelho-nome { font-size: var(--size-body); font-weight: 600; color: var(--text-primary); }
+.sinc-aparelho-nome em { font-style: normal; color: var(--text-muted); font-weight: 400; }
+.sinc-aparelho-meta { font-size: var(--size-micro); color: var(--text-muted); }
+
+.sinc-rodape { display: flex; justify-content: flex-start; padding-top: var(--space-2); border-top: 1px dashed var(--border-subtle); }

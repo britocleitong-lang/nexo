@@ -1,0 +1,34 @@
+@import "./styles/tokens.css";
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--size-body);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -0.015em; }
+p { margin: 0; }
+
+button, input, select, textarea { font-family: inherit; font-size: inherit; }
+
+::selection { background: var(--ink-900); color: var(--white); }
+:root[data-theme="dark"] ::selection { background: var(--ink-100); color: var(--ink-900); }
+
+/* Foco visível — acessibilidade, não decoração */
+:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+
+.tabular { font-variant-numeric: tabular-nums; font-family: var(--font-data); }
+
+/* Scrollbar discreta */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 8px; border: 3px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-400); background-clip: content-box; border: 3px solid transparent; }
+::-webkit-scrollbar-track { background: transparent; }

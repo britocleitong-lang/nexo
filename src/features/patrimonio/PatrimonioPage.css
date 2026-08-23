@@ -1,0 +1,52 @@
+/* Patrimônio — um número responde a pergunta, dois mostram a conta. */
+
+.pat-destaque {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  padding: var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+}
+
+.pat-liquido { display: flex; flex-direction: column; gap: 3px; }
+
+.pat-liquido-label {
+  font-size: var(--size-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.pat-liquido-valor {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.pat-liquido-valor.negativo { color: var(--alerta); }
+
+.pat-composicao { display: flex; align-items: center; gap: var(--space-4); }
+.pat-composicao > div { display: flex; flex-direction: column; gap: 2px; align-items: flex-end; }
+
+.pat-composicao span {
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pat-composicao strong { font-size: var(--size-lead); color: var(--text-secondary); font-weight: 650; }
+.pat-menos { font-size: var(--size-lead); color: var(--text-muted); }
+
+@media (max-width: 640px) {
+  .pat-destaque { flex-direction: column; align-items: flex-start; }
+  .pat-composicao { width: 100%; justify-content: space-between; }
+}

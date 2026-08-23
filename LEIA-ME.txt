@@ -1,0 +1,46 @@
+NEXO — como usar
+================
+
+Nao precisa instalar nada. Funciona no Windows 10 e 11.
+
+COMO ABRIR
+----------
+Clique duas vezes em "Iniciar Nexo.vbs".
+O navegador abre sozinho no endereco http://localhost:4173
+
+Para fechar, clique em "Parar Nexo.vbs".
+
+
+DEIXAR COM CARA DE PROGRAMA (opcional)
+--------------------------------------
+1. Com o Nexo aberto no Microsoft Edge
+2. Menu ... (tres pontos) -> Aplicativos -> Instalar este site como um aplicativo
+3. Marque "Fixar na barra de tarefas" e "Criar atalho na area de trabalho"
+
+Depois disso ele abre em janela propria, sem barra de endereco.
+
+
+ABRIR SOZINHO COM O WINDOWS (opcional)
+--------------------------------------
+1. Tecle Win + R, digite:  shell:startup
+2. Copie um ATALHO do "Iniciar Nexo.vbs" para dentro da pasta que abrir
+
+
+SEUS DADOS
+----------
+Tudo fica guardado no seu proprio computador, dentro do navegador.
+Nada e enviado para a internet.
+
+IMPORTANTE: como o dado vive no navegador, limpar os dados de navegacao
+apaga tudo. Faca backup de vez em quando:
+
+   Configuracoes -> Backup -> Salvar backup agora
+
+Guarde esse arquivo em outro lugar (pen drive, nuvem, outra pasta).
+E o unico jeito de recuperar se algo acontecer.
+
+
+PROTEGER COM SENHA (opcional)
+-----------------------------
+Configuracoes -> Seguranca -> Ativar PIN
+Isso bloqueia a tela para quem mais usar o computador.

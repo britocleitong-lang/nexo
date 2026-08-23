@@ -1,0 +1,168 @@
+/* Avisos — a cor aqui é endereço (de onde veio o aviso), então a
+   severidade se distingue por FORMA: a barra lateral à esquerda do item.
+   É a mesma regra das pastilhas de badge do resto do app. */
+
+.alerta-lista { display: flex; flex-direction: column; }
+
+.alerta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 11px var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  border-left: 3px solid transparent;
+  transition: background 120ms ease;
+}
+
+.alerta-item:last-child { border-bottom: none; }
+.alerta-item:hover { background: var(--surface-hover); }
+
+.alerta-item.sev-atrasado { border-left-color: var(--alerta); }
+.alerta-item.sev-urgente { border-left-color: var(--atencao); }
+.alerta-item.sev-proximo { border-left-color: var(--border-strong); }
+
+.alerta-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.sev-atrasado .alerta-icone { background: var(--alerta-bg); color: var(--alerta); }
+.sev-urgente .alerta-icone { background: var(--atencao-bg); color: var(--atencao); }
+
+.alerta-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.alerta-titulo {
+  font-size: var(--size-body);
+  font-weight: 650;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alerta-corpo:hover .alerta-titulo { color: var(--brand-700); }
+
+.alerta-detalhe {
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* As ações só aparecem no hover: dispensar é irreversível o suficiente pra
+   não ficar convidando o clique acidental em uma lista longa. */
+.alerta-acoes {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.alerta-item:hover .alerta-acoes,
+.alerta-item:focus-within .alerta-acoes { opacity: 1; }
+
+/* --- Bloco de notificações ---------------------------------------------- */
+
+.alerta-notif-topo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.alerta-notif-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.alerta-notif-icone.ativo { background: var(--brand-100); color: var(--brand-700); }
+
+.alerta-notif-texto { flex: 1; min-width: 0; }
+.alerta-notif-texto strong { font-size: var(--size-body); color: var(--text-primary); }
+
+.alerta-notif-texto p {
+  margin: 4px 0 0;
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 80ch;
+}
+
+.alerta-notif-texto em {
+  font-style: normal;
+  color: var(--text-secondary);
+}
+
+.alerta-notif-acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.alerta-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.alerta-switch input { width: 15px; height: 15px; accent-color: var(--brand-700); }
+
+.alerta-notif-mensagem {
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border-subtle);
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+}
+
+.alerta-dispensados {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+}
+
+.alerta-dispensados .link-sutil {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 720px) {
+  .alerta-notif-topo { flex-wrap: wrap; }
+  .alerta-notif-acoes { width: 100%; }
+  .alerta-acoes { opacity: 1; }
+}

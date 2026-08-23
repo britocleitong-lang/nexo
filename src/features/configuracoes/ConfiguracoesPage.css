@@ -1,0 +1,5 @@
+
+/* Configurações enxugadas: menos parágrafo explicando, mais controle à mão. */
+.cfg-bloco { padding: var(--space-4); }
+.cfg-texto { margin: 0 0 var(--space-3); font-size: var(--size-small); color: var(--text-secondary); line-height: 1.55; max-width: 74ch; }
+.cfg-nota { margin: var(--space-3) 0 0; font-size: var(--size-micro); color: var(--text-muted); line-height: 1.5; max-width: 74ch; }

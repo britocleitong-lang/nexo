@@ -1,0 +1,170 @@
+/* Faceplate horizontal — o veículo ocupa a linha inteira.
+   A leitura é sempre da esquerda pra direita, na mesma ordem:
+   foto → o que é → quanto vale → em que estado → o que fazer. */
+
+.imo-lista { display: flex; flex-direction: column; gap: var(--space-3); }
+.imo-lista-vendidos { margin-top: var(--space-3); }
+
+.imo-face {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.imo-face:hover { border-color: var(--brand-300); box-shadow: var(--shadow-pop); }
+
+/* Vendido some do primeiro plano sem sumir da tela: continua legível,
+   mas o olho entende de cara que não é o assunto principal. */
+.imo-face.vendido { opacity: .62; background: var(--bg-sunken); }
+.imo-face.vendido:hover { opacity: 1; }
+
+.imo-face-corpo {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) minmax(0, 180px) 92px 20px;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.imo-face-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 62px;
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  overflow: hidden;
+}
+
+.imo-face-foto img { width: 100%; height: 100%; object-fit: cover; }
+
+.imo-face-identidade { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+.imo-face-modelo {
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.imo-face-detalhe {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.imo-face-valor { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+
+.imo-face-valor-num {
+  font-size: var(--size-lead);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+
+.imo-face-valor-label,
+.imo-face-gasto { font-size: var(--size-micro); color: var(--text-muted); }
+.imo-face-gasto { margin-top: 2px; }
+
+.imo-face-status { display: flex; justify-content: flex-end; }
+.imo-face-seta { color: var(--text-muted); flex-shrink: 0; }
+
+.imo-face-acoes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 var(--space-3);
+  border-left: 1px solid var(--border-subtle);
+}
+
+/* --- Formulários ---------------------------------------------------------- */
+
+.imo-btn-fipe {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px dashed var(--brand-300);
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.imo-btn-fipe:hover { background: var(--brand-100); }
+.imo-btn-fipe svg { flex-shrink: 0; }
+.imo-btn-fipe span { display: flex; flex-direction: column; gap: 2px; }
+.imo-btn-fipe strong { font-size: var(--size-body); }
+.imo-btn-fipe em { font-style: normal; font-size: var(--size-micro); color: var(--text-muted); }
+
+.imo-nota-venda {
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.imo-resultado-venda {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--confirma-bg);
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+}
+
+.imo-resultado-venda.prejuizo { background: var(--alerta-bg); }
+.imo-resultado-venda strong { font-size: var(--size-lead); color: var(--text-primary); }
+
+.imo-checkbox {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.imo-checkbox input { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--brand-700); flex-shrink: 0; }
+.imo-checkbox span { display: flex; flex-direction: column; gap: 3px; }
+.imo-checkbox strong { font-size: var(--size-body); color: var(--text-primary); }
+.imo-checkbox em { font-style: normal; font-size: var(--size-small); color: var(--text-muted); line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .imo-face-corpo { grid-template-columns: 68px minmax(0, 1fr) minmax(0, 120px); gap: var(--space-3); }
+  .imo-face-foto { width: 68px; height: 48px; }
+  .imo-face-status, .imo-face-seta { display: none; }
+  .imo-face-acoes { padding: 0 var(--space-2); }
+}
+
+/* Sem foto, o ícone do tipo ocupa o lugar dela — mantém o ritmo da lista. */
+.imo-face-foto { color: var(--hue-bens); }
+.imo-face-foto svg { opacity: .7; }

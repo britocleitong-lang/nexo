@@ -1,0 +1,97 @@
+/* Regras — o padrão é código, então recebe tratamento de código: mono,
+   fundo afundado. Faz a leitura "texto → categoria" ficar imediata. */
+
+.regra-linha { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.regra-linha code,
+.regra-sugestao code,
+.regra-teste-resultado code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--size-small);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+  color: var(--text-primary);
+}
+
+.regra-seta { color: var(--text-muted); flex-shrink: 0; }
+
+.list-row.regra-inativa { opacity: .48; }
+
+/* --- Sugestões ----------------------------------------------------------- */
+
+.regra-sugestoes { border-left: 3px solid var(--brand-700); }
+
+.regra-sugestoes-topo {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  margin-bottom: var(--space-4);
+}
+
+.regra-sugestoes-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--brand-100);
+  color: var(--brand-700);
+  flex-shrink: 0;
+}
+
+.regra-sugestoes-topo strong { font-size: var(--size-body); color: var(--text-primary); }
+.regra-sugestoes-topo p {
+  margin: 4px 0 0;
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 76ch;
+}
+
+.regra-sugestoes-lista {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.regra-sugestao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.regra-sugestao:last-child { border-bottom: none; }
+.regra-sugestao-cat { flex: 1; font-size: var(--size-small); color: var(--text-primary); font-weight: 600; }
+.regra-sugestao-n { font-size: var(--size-micro); color: var(--text-muted); }
+
+/* --- Teste ao vivo -------------------------------------------------------- */
+
+.regra-teste-resultado {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--size-small);
+  line-height: 1.6;
+}
+
+.regra-teste-resultado.casou { background: var(--confirma-bg); color: var(--text-primary); }
+.regra-teste-resultado.vazio { background: var(--bg-sunken); color: var(--text-muted); }
+.regra-teste-resultado strong { color: var(--text-primary); }
+
+.regra-mensagem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-left: 3px solid var(--confirma);
+  font-size: var(--size-small);
+  color: var(--text-secondary);
+}
+
+.regra-mensagem svg { color: var(--confirma); flex-shrink: 0; }

@@ -1,0 +1,172 @@
+.assistente-page { display: flex; flex-direction: column; height: calc(100vh - 96px); }
+
+.assistente-aviso {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--bg-sunken); color: var(--text-secondary);
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-md);
+  font-size: var(--size-small); line-height: 1.5; margin-bottom: var(--space-4);
+}
+.assistente-aviso svg { flex-shrink: 0; margin-top: 2px; color: var(--text-muted); }
+
+.assistente-chat {
+  flex: 1; display: flex; flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden; min-height: 0;
+}
+
+.assistente-mensagens { flex: 1; overflow-y: auto; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+
+.assistente-msg { display: flex; gap: 10px; max-width: 82%; }
+.assistente-msg.usuario { align-self: flex-end; flex-direction: row-reverse; }
+.assistente-msg-icone { color: var(--brand-700); flex-shrink: 0; margin-top: 9px; }
+
+/* Balão do assistente: superfície recuada, texto normal.
+   Antes usava um token claro fixo, que no modo escuro virava branco no branco. */
+.assistente-msg-conteudo {
+  background: var(--bg-sunken);
+  color: var(--text-primary);
+  padding: 11px 15px;
+  border-radius: var(--radius-lg);
+  font-size: var(--size-body); line-height: 1.55;
+}
+.assistente-msg.usuario .assistente-msg-conteudo {
+  background: var(--brand-700);
+  color: var(--text-on-brand);
+}
+:root[data-theme="dark"] .assistente-msg.usuario .assistente-msg-conteudo { color: #10201e; }
+.assistente-msg-conteudo p { margin: 0; white-space: pre-line; }
+
+.assistente-anexo {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 10px;
+  background: var(--bg-card); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md); padding: 7px 11px;
+  font-size: var(--size-small); font-weight: 600; cursor: pointer; color: var(--text-primary);
+}
+.assistente-anexo:hover { border-color: var(--brand-700); color: var(--brand-700); }
+
+.assistente-opcoes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.assistente-opcao-btn {
+  font-size: var(--size-small); font-weight: 600;
+  padding: 7px 14px; border-radius: var(--radius-pill);
+  border: 1px solid var(--brand-700); background: var(--bg-card); color: var(--brand-700); cursor: pointer;
+}
+.assistente-opcao-btn:hover { background: var(--brand-700); color: var(--text-on-brand); }
+:root[data-theme="dark"] .assistente-opcao-btn:hover { color: #10201e; }
+.assistente-arquivo-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+
+.assistente-sugestoes { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 var(--space-5) var(--space-4); }
+.assistente-sugestao {
+  font-size: var(--size-small); font-weight: 500;
+  padding: 7px 13px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong); background: var(--bg-card);
+  cursor: pointer; color: var(--text-secondary);
+}
+.assistente-sugestao:hover { border-color: var(--brand-700); color: var(--brand-700); }
+
+.assistente-input-row { display: flex; gap: 8px; padding: var(--space-3) var(--space-5) var(--space-4); border-top: 1px solid var(--border-subtle); }
+.assistente-input {
+  flex: 1; border: 1px solid var(--border-strong); border-radius: var(--radius-pill);
+  padding: 11px 16px; font-size: var(--size-body);
+  background: var(--bg-card); color: var(--text-primary);
+}
+.assistente-input:focus { outline: none; border-color: var(--brand-700); box-shadow: var(--shadow-focus); }
+.assistente-enviar, .assistente-mic {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; border: none;
+}
+.assistente-enviar { background: var(--brand-700); color: var(--text-on-brand); }
+.assistente-enviar:hover { background: var(--brand-900); }
+:root[data-theme="dark"] .assistente-enviar { color: #10201e; }
+.assistente-mic { background: var(--bg-card); border: 1px solid var(--border-strong); color: var(--text-secondary); }
+.assistente-mic:hover { border-color: var(--brand-700); color: var(--brand-700); }
+.assistente-mic.ouvindo { background: var(--alerta); border-color: var(--alerta); color: #fff; animation: pulso-mic 1.2s infinite; }
+@keyframes pulso-mic { 0%,100% { box-shadow: 0 0 0 0 rgba(163,58,43,.4) } 50% { box-shadow: 0 0 0 7px rgba(163,58,43,0) } }
+
+.assistente-voz-toggle {
+  display: flex; align-items: center; gap: 6px;
+  font-size: var(--size-small); font-weight: 600;
+  padding: 8px 14px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong); background: var(--bg-card);
+  color: var(--text-secondary); cursor: pointer;
+}
+.assistente-voz-toggle.ativo { border-color: var(--brand-700); color: var(--brand-700); background: var(--brand-50); }
+
+/* --- Modo professor -------------------------------------------------------- */
+
+.professor-aviso {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--atencao-bg); color: var(--atencao);
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-md);
+  font-size: var(--size-small); line-height: 1.5; margin-bottom: var(--space-4);
+}
+.professor-aviso svg { flex-shrink: 0; margin-top: 2px; }
+
+.professor-progresso {
+  display: flex; align-items: center; gap: var(--space-3);
+  font-size: var(--size-small); color: var(--text-muted); margin-bottom: var(--space-4);
+}
+.professor-progresso-barra { flex: 1; height: 6px; background: var(--bg-sunken); border-radius: var(--radius-pill); overflow: hidden; }
+.professor-progresso-barra span { display: block; height: 100%; background: var(--brand-700); border-radius: var(--radius-pill); transition: width .35s cubic-bezier(.32,.72,0,1); }
+.professor-progresso .link-sutil { display: inline-flex; align-items: center; gap: 4px; margin: 0; }
+
+.professor-lista { display: flex; flex-direction: column; gap: var(--space-2); }
+.professor-card {
+  display: flex; align-items: center; gap: var(--space-3);
+  width: 100%; text-align: left; font-family: var(--font-ui);
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+  padding: var(--space-4); cursor: pointer;
+  transition: box-shadow .16s ease, transform .16s ease;
+}
+.professor-card:hover { box-shadow: var(--shadow-raised); transform: translateY(-1px); }
+.professor-numero {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  background: var(--bg-sunken); color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-data); font-size: var(--size-small); font-weight: 700;
+}
+.professor-card.feita .professor-numero { background: var(--confirma-bg); color: var(--confirma); }
+.professor-card.feita .professor-card-titulo { color: var(--text-muted); }
+.professor-card-corpo { display: flex; flex-direction: column; gap: 2px; }
+.professor-card-titulo { font-size: var(--size-body); font-weight: 600; color: var(--text-primary); }
+.professor-card-meta { font-size: var(--size-small); color: var(--text-muted); }
+
+.professor-licao { max-width: 68ch; }
+.professor-licao-titulo { font-size: var(--size-title); font-weight: 700; letter-spacing: -.025em; margin: 0 0 4px; }
+.professor-duracao { font-size: var(--size-small); color: var(--text-muted); }
+.professor-paragrafo { font-size: var(--size-body); line-height: 1.7; color: var(--text-secondary); margin-top: var(--space-4); }
+
+.professor-diagnostico {
+  background: var(--brand-50); border: 1px solid var(--brand-100);
+  border-radius: var(--radius-lg); padding: var(--space-4);
+  margin-top: var(--space-5);
+}
+.professor-diagnostico-rotulo {
+  font-size: var(--size-micro); font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--brand-700);
+}
+.professor-diagnostico p { font-size: var(--size-body); line-height: 1.6; color: var(--text-primary); margin: 6px 0 0; }
+.professor-acoes { display: flex; gap: var(--space-2); margin-top: var(--space-5); flex-wrap: wrap; }
+
+/* --- Cards de lição com ilustração ----------------------------------------- */
+
+.professor-trilha { margin-bottom: var(--space-5); }
+.professor-lista { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.professor-card { align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
+.professor-card-arte { flex-shrink: 0; display: flex; }
+.professor-card-corpo { flex: 1; min-width: 0; }
+.professor-card-trilha {
+  display: block; font-size: var(--size-micro); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em; color: var(--brand-700); margin-bottom: 2px;
+}
+.professor-card .professor-numero { width: 26px; height: 26px; font-size: var(--size-micro); }
+.professor-card .professor-numero.feita { background: var(--confirma-bg); color: var(--confirma); }
+
+.professor-licao-topo { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-4); }
+.professor-licao-topo svg { flex-shrink: 0; }
+
+@media (max-width: 900px) { .professor-lista { grid-template-columns: 1fr; } }

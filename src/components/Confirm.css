@@ -1,0 +1,57 @@
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 13, 17, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: 90;
+  animation: fade-in 0.12s ease;
+}
+
+.confirm-caixa {
+  width: min(400px, 100%);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-pop);
+  padding: var(--space-5);
+  animation: confirm-entrada 0.16s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes confirm-entrada {
+  from { transform: scale(0.97); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.confirm-titulo {
+  font-size: var(--size-lead);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.confirm-descricao {
+  font-size: var(--size-body);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: var(--space-2) 0 0;
+}
+
+.confirm-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+/* Ação destrutiva em vermelho cheio: aqui a cor É o alerta */
+.btn-confirm-danger {
+  background: var(--signal-overdue);
+  color: var(--white);
+  border-color: var(--signal-overdue);
+}
+.btn-confirm-danger:hover { filter: brightness(0.92); }

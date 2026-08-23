@@ -1,0 +1,153 @@
+/* Modo planilha — visual de grade, com as convenções que a mão já conhece. */
+
+.planilha-barra {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-4); margin-bottom: var(--space-3); flex-wrap: wrap;
+}
+.planilha-dica {
+  display: flex; align-items: center; gap: 7px;
+  font-size: var(--size-small); color: var(--text-muted);
+}
+.planilha-dica svg { flex-shrink: 0; }
+
+.planilha-moldura {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: auto;
+  max-height: 62vh;
+}
+
+.planilha { display: inline-block; min-width: 100%; }
+.planilha:focus { outline: none; }
+
+.planilha-cabecalho { display: flex; position: sticky; top: 0; z-index: 2; }
+.planilha-linha { display: flex; }
+.planilha-linha.ativa .planilha-numero { background: var(--brand-50); color: var(--brand-700); }
+
+.planilha-celula {
+  display: flex; align-items: center;
+  height: 36px; padding: 0 10px;
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--size-small);
+  color: var(--text-primary);
+  overflow: hidden;
+  background: var(--bg-card);
+  cursor: cell;
+}
+.planilha-celula.direita { justify-content: flex-end; }
+.planilha-texto { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Cabeçalho e coluna de número: cinza recuado, como numa planilha */
+.planilha-th, .planilha-numero, .planilha-canto {
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: var(--size-micro);
+  cursor: default;
+}
+.planilha-th { text-transform: uppercase; letter-spacing: .05em; }
+.planilha-numero, .planilha-canto {
+  width: 44px; flex-shrink: 0;
+  justify-content: space-between;
+  font-family: var(--font-data);
+  position: sticky; left: 0; z-index: 1;
+}
+.planilha-canto { z-index: 3; }
+
+.planilha-excluir {
+  display: none; align-items: center; justify-content: center;
+  background: none; border: none; padding: 0;
+  color: var(--text-muted); cursor: pointer;
+}
+.planilha-linha:hover .planilha-excluir { display: flex; }
+.planilha-excluir:hover { color: var(--alerta); }
+.planilha-linha:hover .planilha-numero span { display: none; }
+
+/* Célula selecionada: contorno em vez de preenchimento, pra não perder o texto */
+.planilha-celula.selecionada {
+  outline: 2px solid var(--brand-700);
+  outline-offset: -2px;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.planilha-input {
+  width: 100%; height: 100%;
+  border: none; outline: none; background: transparent;
+  font-family: var(--font-ui); font-size: var(--size-small);
+  color: var(--text-primary); padding: 0;
+}
+
+.planilha-vazia {
+  padding: var(--space-7) var(--space-5);
+  text-align: center; font-size: var(--size-body); color: var(--text-muted);
+}
+.planilha-vazia strong { color: var(--text-primary); }
+
+/* --- Cabeçalho: ordenar e filtrar por coluna ------------------------------ */
+
+.planilha-th { position: relative; gap: 4px; }
+.planilha-th-titulo {
+  flex: 1; display: flex; align-items: center; gap: 4px;
+  background: none; border: none; padding: 0;
+  font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit;
+  cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.planilha-th-titulo:hover { color: var(--brand-700); }
+.planilha-th-filtro {
+  background: none; border: none; padding: 2px; cursor: pointer;
+  color: var(--n-400); display: flex; border-radius: 3px; flex-shrink: 0;
+}
+.planilha-th-filtro:hover { color: var(--brand-700); background: var(--bg-card); }
+.planilha-th-filtro.ativo { color: var(--brand-700); background: var(--brand-100); }
+
+.planilha-filtro-painel {
+  position: absolute; top: 100%; left: 0; z-index: 20;
+  background: var(--bg-card); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-raised);
+  padding: 8px; width: 210px;
+  display: flex; flex-direction: column; gap: 6px;
+  text-transform: none; letter-spacing: normal;
+}
+.planilha-filtro-input {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  padding: 7px 9px; font-family: var(--font-ui); font-size: var(--size-small);
+  background: var(--bg-card); color: var(--text-primary); font-weight: 400;
+}
+.planilha-filtro-input:focus { outline: none; border-color: var(--brand-700); }
+.planilha-filtro-limpar {
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  font-size: var(--size-small); font-weight: 600; color: var(--text-muted); padding: 4px;
+}
+.planilha-filtro-limpar:hover { color: var(--alerta); }
+
+.planilha-filtros-ativos {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--brand-50); color: var(--brand-700);
+  border: 1px solid var(--brand-100); border-radius: var(--radius-pill);
+  padding: 6px 12px; font-size: var(--size-small); font-weight: 600; cursor: pointer;
+  margin-left: auto; margin-right: var(--space-2);
+}
+.planilha-filtros-ativos:hover { background: var(--brand-100); }
+
+/* --- Seleção em bloco ------------------------------------------------------ */
+
+.planilha-celula.no-bloco { background: var(--brand-50); }
+:root[data-theme="dark"] .planilha-celula.no-bloco { background: var(--brand-50); }
+
+/* --- Barra de status (soma, média, contagem) -------------------------------- */
+
+.planilha-status {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4);
+  margin-top: var(--space-2); padding: var(--space-2) var(--space-3);
+  font-size: var(--size-small); color: var(--text-muted);
+}
+.planilha-status-item { display: inline-flex; align-items: center; gap: 5px; }
+.planilha-status-item strong {
+  font-family: var(--font-data); font-variant-numeric: tabular-nums;
+  font-weight: 600; color: var(--text-primary);
+}

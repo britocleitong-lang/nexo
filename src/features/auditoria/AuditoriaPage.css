@@ -1,0 +1,100 @@
+/* Histórico — o diff é o conteúdo principal, então ele ganha tratamento
+   tipográfico próprio: valores em mono, antes riscado, depois em destaque. */
+
+.aud-dia {
+  font-size: var(--size-small);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+
+.aud-lista { display: flex; flex-direction: column; }
+
+.aud-item { border-bottom: 1px solid var(--border-subtle); }
+.aud-item:last-child { border-bottom: none; }
+
+.aud-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 10px var(--space-2);
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.aud-cabecalho:hover:not(:disabled) { background: var(--surface-hover); }
+.aud-cabecalho:disabled { cursor: default; }
+
+.aud-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.aud-icone.acao-criar { background: var(--confirma-bg); color: var(--confirma); }
+.aud-icone.acao-atualizar { background: var(--bg-sunken); color: var(--text-muted); }
+.aud-icone.acao-excluir { background: var(--alerta-bg); color: var(--alerta); }
+
+.aud-corpo { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+
+.aud-resumo {
+  font-size: var(--size-body);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aud-meta { font-size: var(--size-micro); color: var(--text-muted); }
+
+.aud-diff {
+  padding: var(--space-3) var(--space-2) var(--space-3) 50px;
+  background: var(--bg-sunken);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aud-diff-linha {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.5fr) minmax(0, 1fr) 16px minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+  font-size: var(--size-small);
+}
+
+.aud-campo { color: var(--text-muted); font-weight: 600; }
+
+.aud-antes {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--alerta);
+  word-break: break-word;
+}
+
+.aud-seta { color: var(--text-muted); }
+
+.aud-depois {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--size-micro);
+  color: var(--text-primary);
+  font-weight: 600;
+  word-break: break-word;
+}
+
+@media (max-width: 720px) {
+  .aud-diff { padding-left: var(--space-3); }
+  .aud-diff-linha { grid-template-columns: 1fr; gap: 2px; }
+  .aud-seta { display: none; }
+}
