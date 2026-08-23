@@ -32,6 +32,7 @@ import {
 import "./AppShell.css";
 import { useEffect, useMemo, useState } from "react";
 import { GlobalSearch } from "./GlobalSearch";
+import { BotaoSync } from "./BotaoSync";
 import { useValoresVisiveis, alternarVisibilidadeValores } from "../utils/visibilidadeValores";
 import { PerfilTopo } from "./PerfilTopo";
 import { resumoAlertas } from "../core/alertas/alertasEngine";
@@ -241,6 +242,8 @@ export function AppShell() {
         </nav>
 
         <div className="sidebar-footer">
+          {/* Some sozinho quando a sincronização não está configurada. */}
+          <BotaoSync />
           <NavLink to="/configuracoes" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
             <Settings size={17} />
             <span>Configurações</span>

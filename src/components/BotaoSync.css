@@ -1,76 +1,85 @@
-/* Botão de sincronizar — mora no topo, é clicado várias vezes por dia,
-   e comunica o estado sem abrir nada. */
+/* Sincronizar mora no rodapé, ao lado de Configurações, e por isso herda
+   a aparência de .nav-item — precisa parecer irmão dele, não um botão
+   solto grudado ali. */
 
-.sync-wrapper { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.sync-item {
+  width: 100%;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
 
-.sync-botao {
+.sync-item:disabled { cursor: default; }
+
+/* Cor só nos estados transitórios. Em repouso ele é neutro como os
+   outros itens do menu — sincronizar não é alerta. */
+.sync-item.sucesso { color: var(--confirma); }
+.sync-item.erro { color: var(--alerta); }
+
+.sync-contador {
+  margin-left: auto;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 13px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  font-family: inherit;
-  font-size: var(--size-small);
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 140ms ease;
-}
-
-.sync-botao:hover:not(:disabled) {
-  border-color: var(--brand-700);
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--brand-100);
   color: var(--brand-700);
-  background: var(--brand-50);
+  font-size: 10.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
-
-.sync-botao:disabled { cursor: default; opacity: .8; }
-.sync-botao.sucesso { border-color: var(--confirma); color: var(--confirma); background: var(--confirma-bg); }
-.sync-botao.erro { border-color: var(--alerta); color: var(--alerta); background: var(--alerta-bg); }
-
-.sync-botao.compacto { padding: 7px; position: relative; }
 
 .sync-girando { animation: sync-girar 1s linear infinite; }
 @keyframes sync-girar { to { transform: rotate(360deg); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .sync-girando { animation: none; opacity: .6; }
+  .sync-girando { animation: none; opacity: .55; }
 }
 
-/* Ponto no canto quando há coisa pendente e o botão está compacto. */
-.sync-ponto {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--brand-700);
-  border: 1.5px solid var(--bg-card);
-}
-
-.sync-mensagem {
+.sync-detalhe {
+  display: block;
+  padding: 2px var(--space-3) 6px 42px;
   font-size: var(--size-micro);
   color: var(--text-muted);
   line-height: 1.4;
-  max-width: 30ch;
 }
 
-.sync-mensagem.erro { color: var(--alerta); max-width: 42ch; }
-.sync-mensagem.sucesso { color: var(--confirma); }
+.sync-detalhe.erro { color: var(--alerta); }
+.sync-detalhe.sucesso { color: var(--confirma); }
 
-.sync-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: var(--size-small);
-  color: var(--text-muted);
+/* --- Barra estreita e celular -------------------------------------------- */
+
+@media (max-width: 1040px) {
+  /* Com só o ícone visível, o contador numérico não cabe: vira um ponto
+     no canto, como o badge dos grupos. A informação que importa nesse
+     tamanho é "tem algo pendente", não quanto. */
+  .sync-item { position: relative; }
+
+  .sync-contador {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    min-width: 0;
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    font-size: 0;
+    background: var(--brand-700);
+    /* Casa com o fundo real da barra lateral, definido em AppShell.css */
+    border: 1.5px solid var(--bg-card);
+  }
+
+  /* O detalhe é texto corrido e não tem onde caber ao lado de um ícone. */
+  .sync-detalhe { display: none; }
 }
 
-.sync-status.desligado { color: var(--text-muted); }
-
-@media (max-width: 820px) {
-  .sync-mensagem { display: none; }
+@media (max-width: 640px) {
+  /* Na barra horizontal do celular, o rodapé fica lado a lado com o
+     resto do menu em vez de empilhar. */
+  .sidebar-footer { display: flex; gap: var(--space-1); }
+  .sync-item { width: auto; }
 }
