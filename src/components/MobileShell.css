@@ -1,0 +1,255 @@
+/* =====================================================================
+   Casca do celular
+   ---------------------------------------------------------------------
+   Três regras que guiam tudo aqui:
+
+   1. ALVO DE TOQUE mínimo de 48 px. Não é enfeite: é a largura média de
+      um polegar. Abaixo disso o erro de toque vira regra.
+   2. ÁREA SEGURA respeitada. iPhone com barra de gestos e Android com
+      navegação por gestos comem os últimos pixels da tela — sem
+      env(safe-area-inset), a última aba fica sob o indicador do sistema.
+   3. NADA DE HOVER. No celular hover ou não existe ou fica "grudado"
+      depois do toque. O retorno visual vem do estado ativo e do :active.
+   ===================================================================== */
+
+.shell-mobile {
+  display: block;
+  min-height: 100dvh;
+  background: var(--bg-app);
+}
+
+/* --- Barra superior ------------------------------------------------------ */
+
+.mob-topo {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  height: 54px;
+  padding: 0 var(--space-4);
+  padding-top: env(safe-area-inset-top);
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+  /* O leve desfoque dá a sensação de camada que apps nativos têm quando
+     o conteúdo passa por baixo. */
+  backdrop-filter: saturate(180%) blur(8px);
+}
+
+.mob-topo-esq { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+.mob-titulo {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mob-topo-acoes { display: flex; gap: 2px; flex-shrink: 0; }
+
+.mob-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mob-icone:active { background: var(--bg-sunken); }
+
+/* --- Abas inferiores ----------------------------------------------------- */
+
+.mob-abas {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mob-aba {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 56px;
+  padding: 7px 2px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 120ms ease;
+}
+
+.mob-aba span { line-height: 1; }
+.mob-aba:active { background: var(--bg-sunken); }
+
+/* Verde-pinho da marca marca o destino atual. O ícone engrossa junto:
+   quem enxerga pouca cor ainda distingue pelo peso. */
+.mob-aba.ativa { color: var(--brand-700); }
+.mob-aba.ativa svg { stroke-width: 2.4; }
+
+.mob-aba-ponto {
+  position: absolute;
+  top: 8px;
+  right: calc(50% - 15px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--alerta);
+  border: 1.5px solid var(--bg-card);
+}
+
+/* --- Folha deslizante ---------------------------------------------------- */
+
+.mob-veu {
+  position: fixed;
+  inset: 0;
+  z-index: 46;
+  background: rgba(31, 31, 28, 0.45);
+  animation: mob-surgir 180ms ease;
+}
+
+.mob-folha {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 47;
+  max-height: 82dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 32px rgba(31, 31, 28, 0.18);
+  animation: mob-subir 260ms cubic-bezier(0.32, 0.72, 0, 1);
+  /* Espaço para a folha não terminar embaixo das abas. */
+  padding-bottom: calc(58px + env(safe-area-inset-bottom));
+}
+
+@keyframes mob-surgir { from { opacity: 0; } }
+@keyframes mob-subir { from { transform: translateY(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mob-veu, .mob-folha { animation: none; }
+}
+
+/* O puxador não é decoração: é o sinal universal de "isto desliza". */
+.mob-folha-puxador {
+  width: 36px;
+  height: 4px;
+  margin: 10px auto 4px;
+  border-radius: var(--radius-pill);
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+
+.mob-folha-conteudo {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.mob-grupo { margin-bottom: var(--space-5); }
+.mob-grupo:last-of-type { margin-bottom: var(--space-3); }
+
+.mob-grupo h2 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  /* Cada grupo mantém o matiz que tem no computador: cor como endereço
+     continua valendo, mesmo com layout diferente. */
+  color: var(--hue-grupo, var(--text-muted));
+}
+
+.mob-grupo-itens {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.mob-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 50px;
+  padding: 0 var(--space-3);
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mob-item:last-child { border-bottom: none; }
+.mob-item:active { background: var(--bg-sunken); }
+.mob-item.ativo { background: var(--brand-50); }
+.mob-item.ativo .mob-item-rotulo { color: var(--brand-700); font-weight: 700; }
+
+.mob-item-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  color: var(--hue-grupo, var(--text-muted));
+  flex-shrink: 0;
+}
+
+.mob-item-rotulo {
+  flex: 1;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.mob-item-seta { color: var(--n-400); flex-shrink: 0; }
+
+.mob-folha-sync {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* --- Conteúdo ------------------------------------------------------------ */
+
+.content-mobile {
+  /* O recuo inferior reserva a altura das abas mais a área segura.
+     Sem ele o último cartão de qualquer lista fica inalcançável. */
+  padding: var(--space-4) var(--space-4)
+           calc(72px + env(safe-area-inset-bottom));
+  max-width: 100%;
+}

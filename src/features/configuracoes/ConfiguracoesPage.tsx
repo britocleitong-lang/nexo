@@ -104,7 +104,7 @@ export function ConfiguracoesPage() {
       </div>
 
       <div className="section">
-        <h3 className="section-title">Assistente e voz</h3>
+        <h3 className="section-title">Assistente</h3>
         <ConfiguracaoVoz />
       </div>
 
@@ -114,12 +114,12 @@ export function ConfiguracoesPage() {
       </div>
 
       <div className="section">
-        <h3 className="section-title">Sincronizar entre aparelhos</h3>
+        <h3 className="section-title">Sincronização</h3>
         <SincronizacaoBloco />
       </div>
 
       <div className="section">
-        <h3 className="section-title">Cópia completa entre aparelhos</h3>
+        <h3 className="section-title">Cópia completa</h3>
         <CopiaCompletaBloco />
       </div>
 
@@ -127,10 +127,7 @@ export function ConfiguracoesPage() {
         <h3 className="section-title">Backup</h3>
         <Card>
           <div style={{ padding: 18 }}>
-            <p className="cfg-texto">
-              O cache do navegador pode ser limpo a qualquer momento. O arquivo .db é o que garante
-              que nada se perca.
-            </p>
+
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
               <Badge tone={avisoBackup.tone}>{avisoBackup.texto}</Badge>
             </div>
@@ -153,7 +150,7 @@ export function ConfiguracoesPage() {
         <Card>
           <div className="cfg-bloco">
             <p className="cfg-texto" style={{ margin: 0 }}>
-              <strong>Nexo</strong> — os dados ficam só neste dispositivo. Nada é enviado para servidores.
+              <strong>Nexo</strong> · dados apenas neste dispositivo
             </p>
           </div>
         </Card>
@@ -382,11 +379,6 @@ function SegurancaPin() {
             </div>
           </form>
         )}
-
-        <p className="cfg-nota">
-          O PIN bloqueia a tela, não criptografa os dados. Esquecendo o PIN, dá para limpar a trava
-          pelas ferramentas do navegador sem perder nada.
-        </p>
       </div>
     </Card>
   );
@@ -412,15 +404,12 @@ function ExportarDados() {
   return (
     <Card>
       <div style={{ padding: 18 }}>
-        <p className="cfg-texto">
-          Arquivo legível, para levar os dados embora. Para restaurar o app, use o backup .db acima.
-          O cofre de senhas não é incluído.
-        </p>
+
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8, margin: "14px 0" }}>
           <label style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 13.5, cursor: "pointer" }}>
             <input type="checkbox" checked={incluirAnexos} onChange={(e) => setIncluirAnexos(e.target.checked)} />
-            Incluir anexos (deixa o arquivo bem maior)
+            Incluir anexos
           </label>
         </div>
 
@@ -435,9 +424,7 @@ function ExportarDados() {
 
         {mensagem && <p style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 12 }}>{mensagem}</p>}
 
-        <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 14, marginBottom: 0 }}>
-          Banco atual: {(tamanho / 1024 / 1024).toFixed(2)} MB · {tabelas.length} tabelas com dados.
-        </p>
+        <p className="cfg-nota">{(tamanho / 1024 / 1024).toFixed(2)} MB · {tabelas.length} tabelas</p>
       </div>
     </Card>
   );

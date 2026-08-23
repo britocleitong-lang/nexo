@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Cloud, CloudOff, Smartphone, Trash2, ExternalLink, Check, UploadCloud, AlertTriangle } from "lucide-react";
+import { Cloud, CloudOff, Smartphone, Trash2, Check, UploadCloud, AlertTriangle } from "lucide-react";
 import {
   clientIdSalvo, definirClientId, estaConfigurado, esquecerConta, jaConectouAlgumaVez,
 } from "../../core/sync/driveClient";
@@ -25,7 +25,6 @@ export function SincronizacaoBloco() {
   const [progresso, setProgresso] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
-  const [mostrarAjuda, setMostrarAjuda] = useState(!estaConfigurado());
   const [pendentes, setPendentes] = useState(0);
   const [semLog, setSemLog] = useState(0);
 
@@ -123,10 +122,10 @@ export function SincronizacaoBloco() {
           <strong>{conectado ? "Sincronização ligada" : "Sincronização desligada"}</strong>
           <p>
             {conectado
-              ? pendentes > 0 ? `${pendentes} alteração(ões) esperando para subir.` : "Tudo em dia neste aparelho."
-              : "Use a mesma conta do Google nos dois aparelhos para eles se manterem iguais."}
+              ? pendentes > 0 ? `${pendentes} esperando para subir` : "Tudo em dia"
+              : "Mesma conta Google nos dois aparelhos"}
             {ultimaSincronizacao() && conectado
-              && ` Última em ${new Date(ultimaSincronizacao()!).toLocaleString("pt-BR")}.`}
+              && ` · ${new Date(ultimaSincronizacao()!).toLocaleString("pt-BR")}`}
           </p>
         </div>
       </div>
@@ -143,11 +142,7 @@ export function SincronizacaoBloco() {
                 ? `${semLog} registro(s) ainda não foram enviados`
                 : "Primeira sincronização: envie o que já existe aqui"}
             </strong>
-            <p>
-              A sincronização normal só carrega o que muda a partir de agora. Os{" "}
-              <strong>{semLog} registros</strong> que já estavam neste aparelho antes precisam ser
-              enviados uma vez — é por isso que o outro aparelho ainda está vazio.
-            </p>
+            <p>{semLog} registros anteriores à sincronização precisam ser enviados uma vez.</p>
           </div>
           <Button variant="primary" onClick={enviarTudo} disabled={carregando}>
             {carregando ? "Enviando..." : "Enviar tudo"}
@@ -157,28 +152,14 @@ export function SincronizacaoBloco() {
 
       {progresso && <p className="sinc-progresso">{progresso}</p>}
 
-      <div className="sinc-como">
-        <h4>Como funciona</h4>
-        <p>
-          Cada alteração vira uma linha num registro de operações, que sobe para uma{" "}
-          <strong>pasta oculta do seu Google Drive</strong> — só este app enxerga, e ela não aparece
-          no meio dos seus arquivos. O aparelho também baixa o que os outros escreveram.
-        </p>
-        <p className="sinc-ressalva">
-          <strong>O limite honesto:</strong> registros diferentes nunca conflitam. Mas se você editar
-          o <em>mesmo</em> lançamento nos dois aparelhos antes de sincronizar, vale o mais recente.
-          Anexos e o cofre de senhas não sincronizam — eles viajam pelo backup .db.
-        </p>
-      </div>
-
-      <Field label="Nome deste aparelho" hint="Para você reconhecer quem escreveu o quê.">
+      <Field label="Nome deste aparelho">
         <div className="sinc-linha">
           <Input value={nome} onChange={(e) => setNome(e.target.value)} />
           <Button onClick={() => { definirNomeAparelho(nome); setMensagem("Nome salvo."); }}>Salvar</Button>
         </div>
       </Field>
 
-      <Field label="Client ID do Google" hint="Criado uma vez, de graça, na sua própria conta.">
+      <Field label="Client ID do Google">
         <div className="sinc-linha">
           <Input
             value={clientId}
@@ -190,30 +171,6 @@ export function SincronizacaoBloco() {
           </Button>
         </div>
       </Field>
-
-      <button className="link-sutil" onClick={() => setMostrarAjuda((v) => !v)}>
-        {mostrarAjuda ? "Esconder o passo a passo" : "Como criar o Client ID"}
-      </button>
-
-      {mostrarAjuda && (
-        <ol className="sinc-passos">
-          <li>
-            Abra o <a href="https://console.cloud.google.com/" target="_blank" rel="noreferrer">
-              Google Cloud Console <ExternalLink size={11} /></a> e crie um projeto.
-          </li>
-          <li><strong>APIs e Serviços → Biblioteca</strong> → ative a <strong>Google Drive API</strong>.</li>
-          <li>
-            <strong>Tela de permissão OAuth</strong> → <strong>Externo</strong> → adicione seu
-            e-mail em <strong>Usuários de teste</strong>. Não publique nem peça verificação.
-          </li>
-          <li><strong>Clientes → Criar cliente</strong>, tipo <strong>Aplicativo da Web</strong>.</li>
-          <li>
-            Em <strong>Origens JavaScript autorizadas</strong>, o endereço exato de cada aparelho —
-            {" "}<code>http://localhost:4173</code> e o do GitHub Pages, <em>só o domínio</em>.
-          </li>
-          <li>Copie o Client ID e cole acima.</li>
-        </ol>
-      )}
 
       {mensagem && <p className="sinc-ok"><Check size={14} /> {mensagem}</p>}
       {erro && <p className="sinc-erro"><AlertTriangle size={14} /> {erro}</p>}
@@ -253,11 +210,7 @@ export function SincronizacaoBloco() {
       )}
 
       <div className="sinc-alternativa">
-        <h4>Sem internet? Use um arquivo</h4>
-        <p>
-          Mesmo motor, transporte manual: gera um arquivo pequeno que você leva de um aparelho ao
-          outro por Drive, WhatsApp ou cabo. Útil se o Google falhar ou você estiver sem rede.
-        </p>
+        <h4>Por arquivo</h4>
         <div className="sinc-linha">
           <Button onClick={async () => {
             const r = await exportarParaArquivo();

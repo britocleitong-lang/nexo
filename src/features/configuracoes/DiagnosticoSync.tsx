@@ -87,10 +87,7 @@ export function DiagnosticoSync() {
         <span className="diag-icone"><Stethoscope size={16} /></span>
         <div>
           <strong>Diagnóstico</strong>
-          <p>
-            Quando um aparelho funciona e o outro não, a diferença quase nunca aparece na tela.
-            Rode isto nos dois e compare — principalmente a <strong>versão do app</strong>.
-          </p>
+          <p>Rode nos dois aparelhos e compare a versão.</p>
         </div>
         <Button onClick={executar} disabled={carregando}>
           {carregando ? "Verificando..." : "Verificar"}
@@ -138,13 +135,8 @@ export function DiagnosticoSync() {
       <div className="diag-atualizar">
         <div>
           <strong>Forçar atualização do app</strong>
-          <p>
-            Um app instalado guarda o código e só troca quando todas as janelas fecham — o que
-            num ícone de tela inicial quase nunca acontece. Se a versão aqui for diferente da do
-            outro aparelho, é isso. Este botão limpa o cache e recarrega.
-            {" "}<em>Seus dados não são tocados.</em>
-          </p>
-          <span className="diag-versao">Versão instalada aqui: <code>{VERSAO_APP}</code></span>
+          <p>Limpa o cache e recarrega. <em>Os dados não são tocados.</em></p>
+          <span className="diag-versao">Versão: <code>{VERSAO_APP}</code></span>
         </div>
         <Button
           variant="primary"

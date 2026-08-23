@@ -33,14 +33,15 @@ import "./AppShell.css";
 import { useEffect, useMemo, useState } from "react";
 import { GlobalSearch } from "./GlobalSearch";
 import { BotaoSync } from "./BotaoSync";
+import { MobileShell } from "./MobileShell";
+import { tituloDaRota } from "./navegacao";
 import { useValoresVisiveis, alternarVisibilidadeValores } from "../utils/visibilidadeValores";
 import { PerfilTopo } from "./PerfilTopo";
 import { resumoAlertas } from "../core/alertas/alertasEngine";
 import { useAtalhoBusca } from "../core/atalhos";
 import { iniciarVigilancia } from "../core/notificacoes/notificacoes";
 
-interface ItemNav { to: string; label: string; icon: any; end?: boolean }
-interface GrupoNav { id: string; label: string; hue: string; itens: ItemNav[] }
+import type { GrupoNav, ItemNav } from "./navegacao";
 
 const ITENS_SOLTOS_TOPO: ItemNav[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -126,6 +127,27 @@ function grupoContemRota(grupo: GrupoNav, pathname: string): boolean {
   return grupo.itens.some((i) => pathname === i.to || pathname.startsWith(i.to + "/"));
 }
 
+/**
+ * Acompanha a largura da janela.
+ *
+ * O corte precisa existir em JS e não só em CSS porque as duas cascas
+ * têm ESTRUTURA diferente — abas inferiores e folha deslizante não são
+ * a barra lateral reposicionada. Esconder uma com display:none deixaria
+ * a árvore inteira montada, com listeners e consultas rodando à toa.
+ */
+function useEhCelular(): boolean {
+  const [ehCelular, setEhCelular] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const aoMudar = (e: MediaQueryListEvent) => setEhCelular(e.matches);
+    mq.addEventListener("change", aoMudar);
+    return () => mq.removeEventListener("change", aoMudar);
+  }, []);
+  return ehCelular;
+}
+
 export function AppShell() {
   const [buscaAberta, setBuscaAberta] = useState(false);
   const location = useLocation();
@@ -135,6 +157,7 @@ export function AppShell() {
   // indexadas) e garante que o badge some no instante em que o item é
   // resolvido, sem precisar de um store global só pra isso.
   const alertas = useMemo(() => resumoAlertas(), [location.pathname]);
+  const ehCelular = useEhCelular();
 
   // Notificações do sistema: a vigilância vive aqui, no shell, porque é o
   // único componente que permanece montado enquanto o app estiver aberto.
@@ -172,6 +195,26 @@ export function AppShell() {
       else novo.add(id);
       return novo;
     });
+  }
+
+  if (ehCelular) {
+    return (
+      <div className="shell shell-mobile">
+        <MobileShell
+          grupos={GRUPOS}
+          itensExtras={ITENS_SOLTOS_BASE}
+          titulo={tituloDaRota(location.pathname)}
+          valoresVisiveis={valoresVisiveis}
+          aoAlternarValores={alternarVisibilidadeValores}
+          aoBuscar={() => setBuscaAberta(true)}
+          alertas={alertas.porGrupo}
+        />
+        <main className="content content-mobile">
+          <Outlet key={valoresVisiveis ? "visivel" : "oculto"} />
+        </main>
+        {buscaAberta && <GlobalSearch onClose={() => setBuscaAberta(false)} />}
+      </div>
+    );
   }
 
   return (

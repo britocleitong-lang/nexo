@@ -3,3 +3,22 @@
 .cfg-bloco { padding: var(--space-4); }
 .cfg-texto { margin: 0 0 var(--space-3); font-size: var(--size-small); color: var(--text-secondary); line-height: 1.55; max-width: 74ch; }
 .cfg-nota { margin: var(--space-3) 0 0; font-size: var(--size-micro); color: var(--text-muted); line-height: 1.5; max-width: 74ch; }
+
+/* Configurações no celular: seções empilhadas com respiro entre elas,
+   sem parágrafos ocupando a tela antes dos controles. */
+@media (max-width: 768px) {
+  .cfg-bloco { padding: var(--space-3); }
+  .cfg-texto { font-size: 13px; }
+  .sinc-linha { flex-direction: column; align-items: stretch; }
+  .sinc-linha .btn { width: 100%; justify-content: center; }
+  .sinc-carga { flex-direction: column; align-items: stretch; }
+  .sinc-carga .btn { width: 100%; justify-content: center; }
+  .copia-acoes { grid-template-columns: 1fr; }
+  .copia-item { flex-wrap: wrap; }
+  .copia-item .btn { width: 100%; justify-content: center; }
+  .diag-topo { flex-wrap: wrap; }
+  .diag-topo .btn { width: 100%; justify-content: center; }
+  .diag-atualizar { flex-direction: column; align-items: stretch; }
+  .diag-atualizar .btn { width: 100%; justify-content: center; }
+  .diag-acoes .btn { flex: 1; justify-content: center; }
+}

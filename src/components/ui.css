@@ -527,3 +527,127 @@ textarea.input { resize: vertical; min-height: 80px; line-height: 1.55; }
 }
 
 .lock-brand-logo { margin-bottom: var(--space-2); display: flex; }
+
+/* =====================================================================
+   Ajustes de celular para os componentes compartilhados
+   ---------------------------------------------------------------------
+   Cada regra aqui corrige um problema concreto que só aparece na tela
+   pequena. Nada é "mobile por precaução".
+   ===================================================================== */
+
+@media (max-width: 768px) {
+
+  /* --- Tipografia e ritmo ------------------------------------------- */
+
+  /* Cabeçalho de página: no celular ele já está repetido na barra
+     superior, então perde peso e vira só o subtítulo e as ações. */
+  .page-header { flex-direction: column; align-items: stretch; gap: var(--space-3); }
+  .page-title { font-size: 21px; letter-spacing: -0.025em; }
+  .page-subtitle { font-size: 13.5px; }
+
+  /* Ações ocupam a linha inteira e ficam ao alcance do polegar, em vez
+     de espremidas no canto superior direito. */
+  .page-header .page-actions { flex-wrap: wrap; }
+  .page-header .page-actions .btn { flex: 1; min-width: 140px; justify-content: center; }
+
+  .section { margin-bottom: var(--space-5); }
+  .section-title { font-size: 13px; }
+
+  /* --- Grades: uma coluna, sem exceção ------------------------------ */
+
+  /* Duas colunas num celular dão 160 px cada — não cabe um valor
+     monetário com rótulo sem quebrar em três linhas. */
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; gap: var(--space-3); }
+
+  /* Os cartões de número são a exceção: eles cabem em dois, e empilhar
+     quatro deles empurraria todo o resto para fora da tela. */
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+
+  /* --- Toque -------------------------------------------------------- */
+
+  /* 44 px é o mínimo que a Apple e o Google recomendam, e a diferença
+     entre acertar e errar o botão com o dedo em movimento. */
+  .btn { min-height: 44px; padding: 10px 16px; font-size: 14px; }
+  .icon-btn { width: 40px; height: 40px; }
+
+  /* 16px no campo evita que o Safari do iPhone dê zoom automático ao
+     focar — comportamento que desloca a tela inteira e assusta. */
+  .input, .select, .textarea { min-height: 44px; font-size: 16px; }
+
+  /* --- Cartões e listas --------------------------------------------- */
+
+  .card { padding: var(--space-4); border-radius: var(--radius-md); }
+
+  .list-row { padding: 12px var(--space-2); gap: var(--space-2); }
+  .list-row-title { font-size: 15px; }
+  .list-row-meta { font-size: 12px; }
+
+  /* Ações sempre visíveis: no celular não existe hover para revelá-las. */
+  .list-row-actions { opacity: 1 !important; }
+
+  /* --- Gaveta vira folha -------------------------------------------- */
+
+  /* Uma gaveta lateral de 420 px numa tela de 390 px é uma tela inteira
+     mal disfarçada. Subindo de baixo, ela fica no alcance do polegar e
+     o gesto de fechar é o natural do sistema. */
+  .drawer {
+    inset: auto 0 0 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 92dvh;
+    border-radius: 20px 20px 0 0;
+    animation: drawer-subir 260ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  @keyframes drawer-subir { from { transform: translateY(100%); } }
+
+  .drawer-header { position: sticky; top: 0; z-index: 2; background: var(--bg-card); }
+  .drawer-body { padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom)); }
+
+  /* Botões do formulário grudam no rodapé da folha: numa gaveta longa,
+     salvar não pode exigir rolar até o fim. */
+  .drawer .page-actions {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-card);
+    padding: var(--space-3) 0 calc(var(--space-2) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border-subtle);
+    margin-top: var(--space-4);
+  }
+  .drawer .page-actions .btn { flex: 1; justify-content: center; }
+
+  .form-row-2 { grid-template-columns: 1fr; gap: var(--space-3); }
+
+  /* --- Abas --------------------------------------------------------- */
+
+  /* Rolagem horizontal com encaixe: as abas não cabem todas, e sem o
+     snap elas param no meio de um rótulo. */
+  .tabs {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { scroll-snap-align: start; white-space: nowrap; min-height: 40px; }
+
+  /* --- Cartões de número -------------------------------------------- */
+
+  .stat-value { font-size: 19px; letter-spacing: -0.02em; }
+  .stat-label { font-size: 10.5px; }
+  /* A dica sai: no celular ela ocupa duas linhas e empurra o número,
+     que é a informação que a pessoa veio buscar. */
+  .stat-hint { display: none; }
+
+  /* --- Tabelas ------------------------------------------------------ */
+
+  /* Tabela larga rola sozinha em vez de espremer a página inteira. */
+  .tabela-rolavel { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* Telas muito estreitas (iPhone SE e similares) */
+@media (max-width: 380px) {
+  .grid-4 { grid-template-columns: 1fr; }
+  .page-header h1 { font-size: 19px; }
+}

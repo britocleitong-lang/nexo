@@ -79,15 +79,7 @@ export function CopiaCompletaBloco() {
         <span className="copia-icone"><HardDriveUpload size={18} /></span>
         <div>
           <strong>Cópia completa</strong>
-          <p>
-            A sincronização normal manda só o que mudou — é o certo no dia a dia, mas depende de
-            tudo chegar inteiro. A cópia completa leva <strong>todas as tabelas de uma vez</strong>.
-            Não há ordem para respeitar nem operação para se perder: se chegou, chegou tudo.
-          </p>
-          <p className="copia-quando">
-            Use para <strong>colocar um aparelho novo em dia</strong> ou para{" "}
-            <strong>resgatar um que ficou pela metade</strong>. Depois, o normal cuida do resto.
-          </p>
+          <p>Leva todas as tabelas de uma vez. Use para pôr um aparelho novo em dia.</p>
         </div>
       </div>
 
@@ -96,7 +88,7 @@ export function CopiaCompletaBloco() {
           <span className="copia-acao-icone"><HardDriveUpload size={17} /></span>
           <span>
             <strong>Enviar cópia deste aparelho</strong>
-            <em>{meuTotal} registros vão para a pasta do Drive</em>
+            <em>{meuTotal} registros</em>
           </span>
         </button>
 
@@ -107,14 +99,14 @@ export function CopiaCompletaBloco() {
           <span className="copia-acao-icone"><FileDown size={17} /></span>
           <span>
             <strong>Salvar como arquivo</strong>
-            <em>Sem nuvem — leve por cabo, WhatsApp ou Drive comum</em>
+            <em>Sem nuvem</em>
           </span>
         </button>
       </div>
 
       {copias.length > 0 && (
         <div className="copia-disponiveis">
-          <h4>Cópias esperando para serem baixadas</h4>
+          <h4>Disponíveis para baixar</h4>
           {copias.map((c) => (
             <div key={c.arquivoId} className="copia-item">
               <HardDriveDownload size={16} />
@@ -135,7 +127,7 @@ export function CopiaCompletaBloco() {
 
       <label className="copia-importar">
         <FileUp size={15} />
-        <span>Aplicar cópia a partir de um arquivo</span>
+        <span>Aplicar de um arquivo</span>
         <input
           type="file" accept="application/json,.json" hidden disabled={ocupado}
           onChange={async (e) => {

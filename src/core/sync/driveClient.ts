@@ -28,9 +28,69 @@ export interface ArquivoDrive {
   size?: string;
 }
 
-let tokenAtual: string | null = null;
-let tokenExpiraEm = 0;
+const CHAVE_TOKEN = "nexo:google-token";
+
 let gisCarregado = false;
+
+// =====================================================================
+// Onde o token mora
+// ---------------------------------------------------------------------
+// Antes ele ficava só na memória, e isso obrigava a reautorizar a cada
+// abertura do app — mesmo com o token ainda válido por mais 50 minutos.
+// No celular, onde o app é aberto e fechado o dia inteiro, virava um
+// pedágio constante.
+//
+// Agora ele é guardado com a data de validade. O ganho é concreto:
+// dentro da hora de vida do token, nenhuma janela do Google aparece.
+//
+// O que se abre mão: o token fica legível no armazenamento do navegador.
+// A troca é aceitável porque este token é o mais fraco possível — só
+// enxerga a pasta oculta do próprio app, não os arquivos do Drive, e
+// morre em uma hora. Quem tiver acesso ao navegador do aparelho já teria
+// acesso ao banco inteiro do Nexo, que é muito mais do que a pasta.
+//
+// O que continua impossível: eliminar a reautorização de vez. Isso
+// exigiria um refresh token, e o Google não entrega refresh token para
+// aplicativo que roda só no navegador — não haveria onde guardá-lo com
+// segurança. Um servidor resolveria e quebraria a premissa do projeto.
+// =====================================================================
+
+function lerTokenSalvo(): { token: string; expiraEm: number } | null {
+  try {
+    const bruto = localStorage.getItem(CHAVE_TOKEN);
+    if (!bruto) return null;
+    const dados = JSON.parse(bruto) as { token: string; expiraEm: number };
+    // Margem de um minuto: um token que vence no meio da sincronização
+    // causaria um erro que a pessoa não entenderia.
+    if (!dados.token || Date.now() >= dados.expiraEm - 60_000) {
+      localStorage.removeItem(CHAVE_TOKEN);
+      return null;
+    }
+    return dados;
+  } catch {
+    return null;
+  }
+}
+
+function guardarToken(token: string, segundos: number): void {
+  try {
+    localStorage.setItem(CHAVE_TOKEN, JSON.stringify({
+      token, expiraEm: Date.now() + segundos * 1000,
+    }));
+  } catch {
+    // Armazenamento bloqueado: segue funcionando na memória desta sessão.
+  }
+}
+
+function descartarToken(): void {
+  tokenAtual = null;
+  tokenExpiraEm = 0;
+  try { localStorage.removeItem(CHAVE_TOKEN); } catch { /* ignorado */ }
+}
+
+const salvo = lerTokenSalvo();
+let tokenAtual: string | null = salvo?.token ?? null;
+let tokenExpiraEm = salvo?.expiraEm ?? 0;
 
 export function clientIdSalvo(): string {
   return localStorage.getItem(CHAVE_CLIENT_ID) ?? "";
@@ -38,8 +98,8 @@ export function clientIdSalvo(): string {
 
 export function definirClientId(id: string): void {
   localStorage.setItem(CHAVE_CLIENT_ID, id.trim());
-  tokenAtual = null;
-  tokenExpiraEm = 0;
+  // Trocar o Client ID invalida qualquer token obtido com o anterior.
+  descartarToken();
 }
 
 export function estaConfigurado(): boolean {
@@ -51,9 +111,14 @@ export function jaConectouAlgumaVez(): boolean {
 }
 
 export function esquecerConta(): void {
-  tokenAtual = null;
-  tokenExpiraEm = 0;
+  descartarToken();
   localStorage.removeItem(CHAVE_CONECTADO);
+}
+
+/** Minutos restantes do token atual — mostrado no diagnóstico. */
+export function minutosDeTokenRestantes(): number | null {
+  if (!tokenAtual || tokenExpiraEm <= Date.now()) return null;
+  return Math.round((tokenExpiraEm - Date.now()) / 60000);
 }
 
 async function carregarGis(): Promise<void> {
@@ -98,8 +163,10 @@ export async function obterToken(interativo: boolean): Promise<string> {
           reject(new Error(traduzirErro(resposta.error)));
           return;
         }
+        const segundos = resposta.expires_in ?? 3600;
         tokenAtual = resposta.access_token;
-        tokenExpiraEm = Date.now() + (resposta.expires_in ?? 3600) * 1000;
+        tokenExpiraEm = Date.now() + segundos * 1000;
+        guardarToken(tokenAtual, segundos);
         localStorage.setItem(CHAVE_CONECTADO, "1");
         resolve(tokenAtual);
       },
@@ -134,8 +201,8 @@ async function chamar(url: string, opcoes: RequestInit, interativo: boolean): Pr
   });
 
   if (resposta.status === 401) {
-    tokenAtual = null;
-    tokenExpiraEm = 0;
+    // O Google recusou o token: pode ter sido revogado antes de vencer.
+    descartarToken();
     const novo = await obterToken(interativo);
     return fetch(url, {
       ...opcoes,
