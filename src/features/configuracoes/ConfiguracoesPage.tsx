@@ -3,6 +3,7 @@ import { Moon, Sun, Save, FolderOpen, Lock, ShieldOff, PlayCircle } from "lucide
 import { Badge, Button, Card, Field, Input, PageHeader, Select } from "../../components/ui";
 import { baixarJson, baixarCsv, tabelasDisponiveis, tamanhoBancoBytes } from "../../core/exportacao/exportarDados";
 import { SincronizacaoBloco } from "./SincronizacaoBloco";
+import { CopiaCompletaBloco } from "./CopiaCompletaBloco";
 import { getDb } from "../../database/db";
 import { salvarBackupReal, abrirBackupReal, diasDesdeUltimoBackup, cacheToOPFS } from "../../database/persistence";
 import { obterTemaSalvo, aplicarTema, type Tema } from "../../utils/theme";
@@ -115,6 +116,11 @@ export function ConfiguracoesPage() {
       <div className="section">
         <h3 className="section-title">Sincronizar entre aparelhos</h3>
         <SincronizacaoBloco />
+      </div>
+
+      <div className="section">
+        <h3 className="section-title">Cópia completa entre aparelhos</h3>
+        <CopiaCompletaBloco />
       </div>
 
       <div className="section">
