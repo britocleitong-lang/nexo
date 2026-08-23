@@ -62,10 +62,6 @@ export default function App() {
           // rodar toda abertura é barato e cobre quem já tinha o app antes.
           semearExercicios();
           semearAlimentos();
-
-          // Sem PIN configurado não existe o gancho do destravamento, então
-          // a sincronia de abertura entra aqui.
-          if (!sessionStorage.getItem(CHAVE_DESBLOQUEADO)) void sincronizarSilenciosamente();
           await podarLog();
 
           await podarEstadosAntigos();
@@ -84,10 +80,7 @@ export default function App() {
           sessionStorage.setItem(CHAVE_DESBLOQUEADO, "1");
           setDesbloqueado(true);
           // Puxa o que os outros aparelhos escreveram, sem travar a
-          // entrada: a tela abre na hora e a sincronia acontece atrás.
-          // Se a rede estiver fora ou a sessão do Google tiver expirado,
-          // não acontece nada e ninguém é interrompido — a sincronia é
-          // conveniência, não pedágio.
+          // entrada. Sem rede ou sessão expirada, não acontece nada.
           void sincronizarSilenciosamente();
         }}
       />

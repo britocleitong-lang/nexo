@@ -32,7 +32,6 @@ import {
 import "./AppShell.css";
 import { useEffect, useMemo, useState } from "react";
 import { GlobalSearch } from "./GlobalSearch";
-import { BotaoSync } from "./BotaoSync";
 import { useValoresVisiveis, alternarVisibilidadeValores } from "../utils/visibilidadeValores";
 import { PerfilTopo } from "./PerfilTopo";
 import { resumoAlertas } from "../core/alertas/alertasEngine";
@@ -193,10 +192,6 @@ export function AppShell() {
           >
             {valoresVisiveis ? <Eye size={15} /> : <EyeOff size={15} />}
           </button>
-          {/* Compacto na barra lateral: aqui o espaço é estreito e o
-              contador de pendências vira um ponto. O botão some sozinho
-              quando a sincronização não está configurada. */}
-          <BotaoSync compacto />
         </div>
 
         <nav className="nav">

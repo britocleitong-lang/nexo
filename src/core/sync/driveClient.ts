@@ -1,26 +1,17 @@
 // =====================================================================
 // Google Drive — pasta de dados do aplicativo
 // ---------------------------------------------------------------------
-// Escolhas que definem este arquivo:
+// Escopo `drive.appdata`: pasta OCULTA que só este app enxerga. O usuário
+// não vê os arquivos poluindo o Drive, e nenhum outro aplicativo consegue
+// ler. É o escopo de menor permissão que resolve o problema — o app nunca
+// ganha acesso aos documentos pessoais de ninguém.
 //
-// 1. ESCOPO `drive.appdata`, não `drive.file` nem `drive`.
-//    O appDataFolder é uma pasta OCULTA que só este app enxerga. O Google
-//    não deixa outro aplicativo ler, e o usuário não vê os arquivos
-//    poluindo o Drive dele. Mais importante: é o escopo de menor permissão
-//    que resolve o problema — o app nunca ganha acesso aos documentos
-//    pessoais de ninguém, e é isso que permite pedir a permissão sem
-//    constrangimento.
+// Token só na memória: vale uma hora, e guardar em disco aumentaria a
+// superfície de ataque para economizar um clique por sessão.
 //
-// 2. TOKEN NA MEMÓRIA, não em localStorage.
-//    Access token vale uma hora. Guardar em disco só aumentaria a
-//    superfície de ataque em troca de evitar um clique por sessão.
-//    O fluxo implícito do Google Identity Services não devolve refresh
-//    token para app de navegador — então uma reautorização silenciosa é
-//    tentada primeiro, e só se ela falhar o usuário vê a janela.
-//
-// 3. SEM BIBLIOTECA. O SDK do Google (gapi) tem ~100 KB e faz muito mais
-//    do que precisamos. Aqui são três chamadas REST e o script pequeno de
-//    identidade, carregado sob demanda — nada disso pesa no app offline.
+// Sem SDK: são quatro chamadas REST e o script pequeno de identidade,
+// carregado sob demanda. O gapi teria ~100 KB e faria muito mais do que
+// precisamos.
 // =====================================================================
 
 const ESCOPO = "https://www.googleapis.com/auth/drive.appdata";
@@ -47,7 +38,6 @@ export function clientIdSalvo(): string {
 
 export function definirClientId(id: string): void {
   localStorage.setItem(CHAVE_CLIENT_ID, id.trim());
-  // Trocar o Client ID invalida qualquer token já obtido.
   tokenAtual = null;
   tokenExpiraEm = 0;
 }
@@ -73,9 +63,7 @@ async function carregarGis(): Promise<void> {
     script.src = GIS_SRC;
     script.async = true;
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error(
-      "Não consegui carregar o serviço de login do Google. Verifique a conexão.",
-    ));
+    script.onerror = () => reject(new Error("Não consegui carregar o login do Google. Verifique a conexão."));
     document.head.appendChild(script);
   });
   gisCarregado = true;
@@ -87,13 +75,6 @@ interface RespostaToken {
   error?: string;
 }
 
-/**
- * Devolve um token válido.
- *
- * `interativo = false` tenta renovar sem mostrar nada — é o que roda ao
- * destravar o app com o PIN. Se o Google exigir interação, a promessa
- * rejeita e o chamador decide se pede o clique ou desiste em silêncio.
- */
 export async function obterToken(interativo: boolean): Promise<string> {
   if (tokenAtual && Date.now() < tokenExpiraEm - 60_000) return tokenAtual;
 
@@ -122,13 +103,11 @@ export async function obterToken(interativo: boolean): Promise<string> {
         localStorage.setItem(CHAVE_CONECTADO, "1");
         resolve(tokenAtual);
       },
-      error_callback: (err: { type?: string }) => {
-        reject(new Error(traduzirErro(err?.type)));
-      },
+      error_callback: (err: { type?: string }) => reject(new Error(traduzirErro(err?.type))),
     });
 
-    // `prompt: ""` pede reautorização silenciosa: se a permissão já foi
-    // concedida e a sessão do Google está viva, o token volta sem janela.
+    // prompt vazio pede reautorização silenciosa: se a permissão já existe
+    // e a sessão do Google está viva, o token volta sem abrir janela.
     cliente.requestAccessToken({ prompt: interativo ? "consent" : "" });
   });
 }
@@ -141,11 +120,9 @@ function traduzirErro(codigo?: string): string {
     case "access_denied":
       return "Permissão negada. Sem ela não dá para sincronizar.";
     case "idpiframe_initialization_failed":
-      return "O navegador bloqueou o login do Google. Cookies de terceiros precisam estar liberados.";
+      return "O navegador bloqueou o login do Google. Libere cookies de terceiros.";
     default:
-      return codigo
-        ? `O Google recusou a autorização (${codigo}).`
-        : "Não consegui autorizar com o Google.";
+      return codigo ? `O Google recusou a autorização (${codigo}).` : "Não consegui autorizar com o Google.";
   }
 }
 
@@ -157,7 +134,6 @@ async function chamar(url: string, opcoes: RequestInit, interativo: boolean): Pr
   });
 
   if (resposta.status === 401) {
-    // Token venceu no meio da operação. Descarta e tenta uma vez mais.
     tokenAtual = null;
     tokenExpiraEm = 0;
     const novo = await obterToken(interativo);
@@ -166,15 +142,14 @@ async function chamar(url: string, opcoes: RequestInit, interativo: boolean): Pr
       headers: { ...(opcoes.headers ?? {}), Authorization: `Bearer ${novo}` },
     });
   }
-
   return resposta;
 }
 
 export async function listarArquivos(prefixo = "", interativo = false): Promise<ArquivoDrive[]> {
   const busca = prefixo ? ` and name contains '${prefixo.replace(/'/g, "")}'` : "";
   const url = "https://www.googleapis.com/drive/v3/files"
-    + `?spaces=appDataFolder&pageSize=200&orderBy=modifiedTime desc`
-    + `&fields=files(id,name,modifiedTime,size)`
+    + "?spaces=appDataFolder&pageSize=200&orderBy=modifiedTime desc"
+    + "&fields=files(id,name,modifiedTime,size)"
     + `&q=trashed=false${busca}`;
 
   const resposta = await chamar(url, { method: "GET" }, interativo);
@@ -190,17 +165,14 @@ export async function baixarArquivo(id: string, interativo = false): Promise<str
   return resposta.text();
 }
 
-/** Envia (cria ou substitui) usando upload multipart em uma requisição. */
 export async function enviarArquivo(
   nome: string,
   conteudo: string,
   idExistente?: string,
   interativo = false,
 ): Promise<string> {
-  const limite = `nexo${Date.now()}`;
-  const metadados = idExistente
-    ? { name: nome }
-    : { name: nome, parents: [PASTA] };
+  const limite = `nexo${Date.now()}${Math.random().toString(36).slice(2, 8)}`;
+  const metadados = idExistente ? { name: nome } : { name: nome, parents: [PASTA] };
 
   const corpo =
     `--${limite}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`
@@ -247,10 +219,4 @@ async function mensagemErro(resposta: Response, acao: string): Promise<string> {
     return `Sem permissão para ${acao}. Reconecte a conta nas configurações.`;
   }
   return `Não consegui ${acao}${detalhe ? `: ${detalhe}` : ` (erro ${resposta.status})`}.`;
-}
-
-/** Espaço ocupado pela pasta oculta — ajuda a decidir quando podar. */
-export async function tamanhoOcupadoBytes(): Promise<number> {
-  const arquivos = await listarArquivos("", false);
-  return arquivos.reduce((soma, a) => soma + Number(a.size ?? 0), 0);
 }

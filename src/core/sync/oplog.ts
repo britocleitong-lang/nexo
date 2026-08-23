@@ -216,3 +216,120 @@ export async function podarLog(diasRetencao = 60): Promise<number> {
   const depois = queryAll<{ t: number }>("SELECT COUNT(*) as t FROM sync_oplog")[0]?.t ?? 0;
   return antes - depois;
 }
+
+
+// =====================================================================
+// Carga inicial
+// ---------------------------------------------------------------------
+// O problema que isto resolve, e que só aparece no primeiro uso:
+//
+// O log registra o que acontece a partir do momento em que ele existe.
+// Quem já usava o app antes da sincronização tem centenas de registros
+// no banco e ZERO operações no log — porque nada daquilo passou por aqui.
+// O resultado é uma primeira sincronização que funciona perfeitamente e
+// não transfere nada, porque de fato não há nada a transferir.
+//
+// A carga inicial percorre as tabelas e cria uma operação de inserção
+// para cada linha existente. A partir daí a sincronização normal leva
+// tudo, sem nenhum caminho especial.
+//
+// Detalhe que evita estrago: o relógio de cada operação vem do
+// `atualizado_em` da própria linha, não da hora atual. Se viesse de agora,
+// a carga inicial do computador ficaria "mais recente" que edições
+// legítimas feitas no celular e sobrescreveria todas elas. Usando a data
+// real do registro, a ordem verdadeira é preservada.
+// =====================================================================
+
+const CHAVE_CARGA_FEITA = "carga-inicial-feita";
+
+/** Ordem importa: tabelas referenciadas antes das que dependem delas. */
+const ORDEM_CARGA = [
+  "pessoas", "categorias", "contas", "cartoes", "veiculos", "imoveis",
+  "investimentos", "documentos", "documento_versoes", "exercicios", "rotinas",
+  "alimentos", "medidas_caseiras",
+  "transacoes", "orcamentos", "movimentos_investimento", "dividas",
+  "abastecimentos", "manutencoes", "modificacoes", "km_registros",
+  "manutencoes_imovel", "registros_saude", "vacinas_aplicadas",
+  "eventos", "tarefas", "subtarefas", "bens", "patrimonio_historico",
+  "contatos", "opcoes_personalizadas", "recorrencias", "parcelamentos",
+  "rotina_exercicios", "sessoes_treino", "series_treino", "medidas_corporais",
+  "refeicoes", "refeicao_itens", "registros_agua",
+];
+
+export function cargaInicialFeita(): boolean {
+  return lerEstado(CHAVE_CARGA_FEITA) === "1";
+}
+
+/** Quantos registros existem hoje sem nenhuma operação no log. */
+export function contarRegistrosSemLog(): number {
+  let total = 0;
+  for (const tabela of ORDEM_CARGA) {
+    if (!tabelaSincronizada(tabela)) continue;
+    try {
+      total += queryAll<{ t: number }>(
+        `SELECT COUNT(*) as t FROM ${tabela} t
+         WHERE NOT EXISTS (SELECT 1 FROM sync_oplog o WHERE o.tabela = ? AND o.registro_id = t.id)`,
+        [tabela],
+      )[0]?.t ?? 0;
+    } catch {
+      // Tabela ausente nesta versão do schema.
+    }
+  }
+  return total;
+}
+
+/** Converte a data ISO da linha em milissegundos, com reserva segura. */
+function relogioDaLinha(linha: Record<string, unknown>): number {
+  const iso = (linha.atualizado_em ?? linha.criado_em) as string | undefined;
+  const ms = iso ? Date.parse(iso) : NaN;
+  // Sem data válida, usa um instante antigo: qualquer edição real feita
+  // depois vence a carga inicial, que é exatamente o comportamento certo.
+  return Number.isNaN(ms) ? 1 : ms;
+}
+
+export interface ResultadoCarga {
+  tabelas: number;
+  registros: number;
+}
+
+export async function semearLogInicial(): Promise<ResultadoCarga> {
+  const origem = idAparelho();
+  const agora = new Date().toISOString();
+  const resultado: ResultadoCarga = { tabelas: 0, registros: 0 };
+
+  for (const tabela of ORDEM_CARGA) {
+    if (!tabelaSincronizada(tabela)) continue;
+
+    let linhas: Array<Record<string, unknown>>;
+    try {
+      linhas = queryAll<Record<string, unknown>>(
+        `SELECT * FROM ${tabela} t
+         WHERE NOT EXISTS (SELECT 1 FROM sync_oplog o WHERE o.tabela = ? AND o.registro_id = t.id)`,
+        [tabela],
+      );
+    } catch {
+      continue;
+    }
+
+    if (linhas.length === 0) continue;
+    resultado.tabelas += 1;
+
+    let seq = 0;
+    for (const linha of linhas) {
+      const id = linha.id as string | undefined;
+      if (!id) continue;
+      await runAndPersist(
+        `INSERT INTO sync_oplog (id, tabela, registro_id, operacao, dados, relogio, contador, origem, enviado, criado_em, atualizado_em)
+         VALUES (?, ?, ?, 'inserir', ?, ?, ?, ?, 0, ?, ?)`,
+        [
+          crypto.randomUUID(), tabela, id, JSON.stringify(linha),
+          relogioDaLinha(linha), seq++, origem, agora, agora,
+        ],
+      );
+      resultado.registros += 1;
+    }
+  }
+
+  await gravarEstado(CHAVE_CARGA_FEITA, "1");
+  return resultado;
+}
