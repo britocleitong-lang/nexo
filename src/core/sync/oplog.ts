@@ -172,6 +172,18 @@ export function idsConhecidos(): Set<string> {
   return new Set([...proprias, ...externas]);
 }
 
+/**
+ * Esquece o registro de operações já vistas.
+ *
+ * Usado só pelo diagnóstico, para reprocessar tudo que está na nuvem.
+ * É seguro: aplicar de novo uma operação já aplicada reescreve a linha
+ * com o mesmo conteúdo, e a regra de última-escrita-vence continua
+ * protegendo qualquer edição mais recente feita aqui.
+ */
+export async function limparAplicadas(): Promise<void> {
+  await runAndPersist("DELETE FROM sync_aplicadas");
+}
+
 export async function marcarAplicada(opId: string): Promise<void> {
   await runAndPersist(
     "INSERT OR IGNORE INTO sync_aplicadas (op_id, aplicada_em) VALUES (?, ?)",

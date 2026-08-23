@@ -1,0 +1,108 @@
+/* Diagnóstico — tela de depuração, então a prioridade é densidade de fato
+   por centímetro, não elegância. Cada linha é uma resposta verificável. */
+
+.diag {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.diag-topo { display: flex; gap: var(--space-3); align-items: flex-start; }
+
+.diag-icone {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: var(--radius-md);
+  background: var(--bg-sunken); color: var(--text-muted); flex-shrink: 0;
+}
+
+.diag-topo > div { flex: 1; min-width: 0; }
+.diag-topo strong { font-size: var(--size-body); color: var(--text-primary); }
+.diag-topo p {
+  margin: 4px 0 0; font-size: var(--size-small);
+  color: var(--text-muted); line-height: 1.55; max-width: 76ch;
+}
+
+.diag-lista {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.diag-item {
+  display: flex; gap: 9px; align-items: flex-start;
+  padding: 9px var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  border-left: 3px solid transparent;
+}
+
+.diag-item:last-child { border-bottom: none; }
+.diag-item.sit-ok { border-left-color: var(--confirma); }
+.diag-item.sit-atencao { border-left-color: var(--atencao); }
+.diag-item.sit-erro { border-left-color: var(--alerta); background: var(--alerta-bg); }
+
+.diag-item-icone { flex-shrink: 0; margin-top: 2px; color: var(--text-muted); }
+.sit-ok .diag-item-icone { color: var(--confirma); }
+.sit-atencao .diag-item-icone { color: var(--atencao); }
+.sit-erro .diag-item-icone { color: var(--alerta); }
+
+.diag-item-corpo { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+
+.diag-item-rotulo {
+  font-size: var(--size-micro); color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 650;
+}
+
+.diag-item-valor {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--size-small);
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.diag-item-dica {
+  margin-top: 3px;
+  font-size: var(--size-micro);
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 74ch;
+}
+
+.diag-acoes { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.diag-resultado {
+  margin: 0; padding: 9px var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  font-size: var(--size-small); color: var(--text-secondary);
+}
+
+/* O bloco de atualização fica destacado: é a ação que resolve o problema
+   mais comum e mais invisível. */
+.diag-atualizar {
+  display: flex; gap: var(--space-4); align-items: center;
+  padding: var(--space-4);
+  border: 1px solid var(--brand-300);
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  flex-wrap: wrap;
+}
+
+.diag-atualizar > div { flex: 1; min-width: 240px; }
+.diag-atualizar strong { font-size: var(--size-body); color: var(--text-primary); }
+.diag-atualizar p {
+  margin: 4px 0 6px; font-size: var(--size-small);
+  color: var(--text-secondary); line-height: 1.55; max-width: 76ch;
+}
+.diag-atualizar em { font-style: normal; color: var(--confirma); font-weight: 600; }
+
+.diag-versao { font-size: var(--size-micro); color: var(--text-muted); }
+.diag-versao code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+}

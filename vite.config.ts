@@ -14,8 +14,16 @@ import { VitePWA } from "vite-plugin-pwa";
 // lugar fazem o navegador recusar a instalação como aplicativo.
 const BASE = process.env.BASE || "/";
 
+// Carimbo de versão gravado na compilação. Serve para comparar aparelhos:
+// se o celular mostra um carimbo diferente do computador, ele está com
+// código antigo em cache — que é invisível de qualquer outra forma.
+const VERSAO_APP = new Date().toISOString().slice(0, 16).replace("T", " ");
+
 export default defineConfig({
   base: BASE,
+  define: {
+    __VERSAO_APP__: JSON.stringify(VERSAO_APP),
+  },
   plugins: [
     react(),
     VitePWA({

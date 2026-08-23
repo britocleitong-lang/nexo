@@ -14,6 +14,7 @@ import {
 import { exportarParaArquivo, importarDeArquivo } from "../../core/sync/arquivoSync";
 import { Button, Card, Field, Input } from "../../components/ui";
 import { confirmar } from "../../components/Confirm";
+import { DiagnosticoSync } from "./DiagnosticoSync";
 import "./SincronizacaoBloco.css";
 
 export function SincronizacaoBloco() {
@@ -280,6 +281,8 @@ export function SincronizacaoBloco() {
           </label>
         </div>
       </div>
+
+      <DiagnosticoSync />
 
       {conectado && (
         <div className="sinc-rodape">
